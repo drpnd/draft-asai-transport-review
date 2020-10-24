@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!ENTITY RFC0768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml">
+<!ENTITY RFC0793 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0793.xml">
 <!ENTITY RFC1122 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1122.xml">
+<!ENTITY RFC1123 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1123.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2474 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
+<!ENTITY RFC3168 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml">
+<!ENTITY RFC4340 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4340.xml">
+<!ENTITY RFC4960 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml">
+<!ENTITY RFC6071 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml">
+<!ENTITY RFC8446 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
 ]>
-
 
 <?rfc strict="no" ?>
 <!-- give errors regarding ID-nits and DTD validation -->
@@ -17,18 +25,18 @@
 
 <!--ipr="noDerivativeWorks2026", full2026, trust200902-->
 <!-- trust200902, noDerivativeWorks2026 -->
-<rfc docName="draft-asai-tsvwg-rearch" ipr="trust200902" category="std">
+<rfc docName="draft-asai-tsvwg-rearch-00" ipr="trust200902" category="std" consensus="true">
 
   <front>
-    <title abbrev="Separation of Flow Control and Reliability Checking in the Transport Layer">
-      Separation of Flow Control and Reliability Checking in the Transport Layer
+    <title abbrev="Data Path and Data Flow Layers">
+      Separation of Data Path and Data Flow Sublayers in the Transport Layer
     </title>
     <author fullname="Hirochika Asai" initials="H." surname="Asai">
       <organization abbrev="Preferred Networks">Preferred Networks, Inc.</organization>
       <address>
         <postal>
-          <street>1-6-1 Otemachi</street>
-          <city>Chiyoda</city>
+<!--<country>, <code>, <region>, <street>, <extaddr> for Japan-->
+          <street>1-6-1 Otemachi, Chiyoda</street>
           <region>Tokyo</region>
           <code>100-0004</code>
           <country>JP</country>
@@ -37,25 +45,28 @@
       </address>
     </author>
 
-    <date month="Oct" year="2020" />
+    <date month="Oct" day="25" year="2020" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
     <!--<workgroup></workgroup>-->
     <keyword>Transport Layer</keyword>
-    <keyword>Flow Control</keyword>
+    <keyword>Data Path Layer</keyword>
+    <keyword>Data Flow Layer</keyword>
     <keyword>Congestion Control</keyword>
     <keyword>Reliability</keyword>
-    <keyword>Integrity</keyword>
-    <keyword>Reordering</keyword>
-
+    
     <abstract>
       <t>This document defines an architectural design of the transport layer.
       In particular, this specifies the separation of flow control and
       reliability in the transport layer.
-      The flow control and the reliability functions are separated with each
-      other.  The flow control function is implemented upon the network layer
-      and the reliability function is over the flow control function.
+      This document divides the transport layer into two sublayers; the data
+      path and the data flow layers.
+      The data path layer multiplexes multiple data flow layer protocols and
+      provides path quality monitoring and congestion control functions.
+      The data flow layer provides additional functionality upon the data path
+      layer, such as retransmission for reliable data delivery and transport
+      layer security.
       </t>
     </abstract>
   </front>
@@ -63,6 +74,7 @@
   <middle>
     <section title="Introduction">
       <t>This document defines an architectural design of the transport layer.
+      Middleboxes such as TCP offloading and in-network computing.
       </t>
       <t>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;,
       &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;,
@@ -72,8 +84,157 @@
       <xref target="RFC2119">RFC 2119</xref>.</t>
     </section>
 
-    <section title="Conventional layering">
-      <t>Four communication layers are defined in <xref target="RFC1122">RFC 1122</xref>.</t>
+    <section title="Conventional layering and transport layer">
+      <t>This section describes the conventional layering and transport layer
+      functionality.</t>
+      <t><xref target="RFC1122">RFC 1122</xref> defines three communication
+      layers, link layer, Internet layer, and transport layer.
+      Link-layer protocols provide hop-by-hop packet delivery.
+      Internet layer protocols such as IP, ICMP, and IGMP provide datagram
+      delivery function and control.
+      <xref target="RFC1123">RFC 1123</xref> defines the application layer over
+      the transport layer.
+      </t>
+      <t>The transport layer provides various functions over the IP.
+      <xref target="RFC0768">User Datagram Protocol (UDP)</xref> 
+      and <xref target="RFC0793">Transmission Control Protocol (TCP)</xref>
+      are the most commonly used transport layer protocols.
+      TCP implements flow control according to the receiver's capability,
+      retransmission for reliable communication, congestion control by packet
+      delivery statuses such as packet losses and delay.
+      </t>
+      <t>The Internet is designed to follow the end-to-end principle to keep the
+      simplicity of the IP layer.  Thus, the functionality of the IP layer is just
+      to provide end-to-end reachability.  It does not guarantee datagram
+      integrity, which means that packet loss, duplication, corruption, or
+      reordering may occur.  Over the IP layer, the transport layer implements
+      such functionality on the endhosts.  This is the fundamentals of the
+      Internet architecture.</t>
+
+      <t>However, this conventional layering model is not always suitable for
+      recent networked applications, especially for mobile/multiaccess edge
+      computing (MEC).  Recent networked systems add middleboxes, including MEC,
+      to enhance the network functionality.  Some of the functions provided by
+      middleboxes are transparent to the conventional layering model, such as
+      stateless firewalls, but some others may not be transparent and violate it.
+      For example, considering MEC, data flows are terminated at MEC nodes, while
+      the actual data consumption may be at nodes in a datacenter.  This could
+      be considered just an overlay network in the application layer.  However,
+      the invention of different application-layer overlay networks will add to
+      software development costs.  Thus, we introduce new layers over the IP
+      layer that support the termination of the data flow.</t>
+
+      <t>Tightly coupled.  For example, TCP implements congestion control for
+      network resource control (arbitration) and retransmission for reliable
+      communication.
+      <xref target="RFC8446">Transport Layer Security (TLS)</xref> adds a set of
+      security functions to the transport layer protocol.
+      <xref target="RFC4340">Datagram Congestion Control Protocol (DCCP)</xref>
+      <xref target="RFC4960">Stream Control Transmission Protocol (SCTP)</xref>
+      </t>
+
+      <t>Quality of Service (QoS) <xref target="RFC2474">Diffserv</xref>.
+      Congestion control.
+      <xref target="RFC3168">Explicit Congestion Notification (ECN)</xref>
+      is added to the IP layer.
+      </t>
+
+
+      <figure align="center" anchor="layer-congestion"
+        title="Data path layer and data flow layer">
+        <preamble>Preamble text - can be omitted or empty.</preamble>
+
+        <artwork align="left"><![CDATA[
++-------------------+                           +-------------------+
+| Application layer |<------------------------->| Application layer |
++-------------------+                           +-------------------+
+| Data flow layer   |<------------------------->| Data flow layer   |
++-------------------+   +-------------------+   +-------------------+
+| Data path layer   |<->| Data path layer   |<->| Data path layer   |
++-------------------+   +-------------------+   +-------------------+
+| IP layer          |<->| IP layer          |<->| IP layer          |
++-------------------+   +-------------------+   +-------------------+
+| Link layer        |<->| Link layer        |<->| Link layer        |
++-------------------+   +-------------------+   +-------------------+
+  Client                  MiddleBox               Server
+            ]]></artwork>
+
+        <postamble>The middlebox intercepts the data path layer protocol.
+        For example, the middlebox performs congestion control.
+        </postamble>
+      </figure>
+
+      <figure align="center" anchor="layer-middlebox"
+       title="Data path layer and data flow layer">
+        <preamble>Preamble text - can be omitted or empty.</preamble>
+
+        <artwork align="left"><![CDATA[
++-------------------+                           +-------------------+
+| Application layer |<------------------------->| Application layer |
++-------------------+   +-------------------+   +-------------------+
+| Data flow layer   |<->| Data flow layer   |<->| Data flow layer   |
++-------------------+   +-------------------+   +-------------------+
+| Data path layer   |<->| Data path layer   |<->| Data path layer   |
++-------------------+   +-------------------+   +-------------------+
+| IP layer          |<->| IP layer          |<->| IP layer          |
++-------------------+   +-------------------+   +-------------------+
+| Link layer        |<->| Link layer        |<->| Link layer        |
++-------------------+   +-------------------+   +-------------------+
+  Client                  MiddleBox               Server
+            ]]></artwork>
+
+        <postamble>The middlebox intercepts the data flow layer protocol.
+        For example, the middlebox performs in-network computing.
+        </postamble>
+      </figure>
+
+      <t>The data path and data flow layers are defined
+      as shown in <xref target="layer-middlebox" />.
+      </t>
+
+    </section>
+
+    <section anchor="transport-layer" title="Transport Layer">
+    <t>This document divides the transport layer into two sublayers;
+    the data path and the data flow layers.
+    This section describes the functionality of these two sublayers.
+    </t>
+    <section anchor="data-path-layer" title="Data Path Layer">
+    <t>The data path layer provides in-band trajectory and path quality
+    monitoring.
+    The trajectory monitoring function enables an application to detect path
+    change events and single point of failure for multipath protocols.
+    The path quality monitoring function provides congestion monitoring and
+    control functionality.</t>
+    <t>The data path layer should implement congestion control.
+    However, the prioritization of data flows multiplexed in a data path layer
+    protocol should be implemented on the data flow layer using the data path
+    layer information.
+    </t>
+    <t>The data path layer enables us to collectively handle different
+    characteristics (e.g., service level requirements) of transport layer
+    protocols such as stream and datagram protocols. 
+    </t>
+    </section>
+
+    <section anchor="data-flow-layer" title="Data Flow Layer">
+    <t>The data flow layer may implement various functions over the data path
+    layer.
+    Data flow layer protocols may be stream, datagram, or message-oriented
+    protocols.</t>
+    <t>A data flow layer protocol may implement a multipath transport protocol
+    using multiple paths over the data path layer, a retransmission function for
+    reliable data communication, and a security extension such as transport
+    layer security (TLS).
+    </t>
+    </section>
+    
+    </section>
+
+    <section anchor="Discussion" title="Discussion: IP vs. Transport Layer">
+    <t>This document proposes to separate the data path layer
+    and data flow layer from the transport layer.
+    </t>
     </section>
 
     <section anchor="IANA" title="IANA Considerations">
@@ -81,7 +242,12 @@
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>To be written</t>
+      <t>Payload encryption may be implemented at various layers.
+      <xref target="RFC6071">IPsec</xref> encrypts the payload of an IP
+      datagram.
+      Data path layer protocols are not visible to the middleboxes.
+      Therefore, data path layer protocols cannot be manipulated by
+      middleboxes in such cases.</t>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
@@ -94,8 +260,17 @@
     <!-- References split into informative and normative -->
 
     <references title="Normative References">
+      &RFC0768;
+      &RFC0793;
       &RFC1122;
+      &RFC1123;
       &RFC2119;
+      &RFC2474;
+      &RFC3168;
+      &RFC4340;
+      &RFC4960;
+      &RFC6071;
+      &RFC8446;
     </references>
     <!--<references title="Informative References">
     </references>-->
