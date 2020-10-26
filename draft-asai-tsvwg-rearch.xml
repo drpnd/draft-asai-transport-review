@@ -6,10 +6,12 @@
 <!ENTITY RFC1123 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1123.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC2474 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
+<!ENTITY RFC2768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2768.xml">
 <!ENTITY RFC3168 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml">
 <!ENTITY RFC4340 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4340.xml">
 <!ENTITY RFC4960 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml">
 <!ENTITY RFC6071 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml">
+<!ENTITY RFC8402 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8402.xml">
 <!ENTITY RFC8446 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
 ]>
 
@@ -45,7 +47,7 @@
       </address>
     </author>
 
-    <date month="Oct" day="25" year="2020" />
+    <date month="Oct" day="26" year="2020" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -57,59 +59,163 @@
     <keyword>Reliability</keyword>
     
     <abstract>
-      <t>This document defines an architectural design of the transport layer.
-      In particular, this specifies the separation of flow control and
-      reliability in the transport layer.
-      This document divides the transport layer into two sublayers; the data
-      path and the data flow layers.
-      The data path layer multiplexes multiple data flow layer protocols and
-      provides path quality monitoring and congestion control functions.
+      <t>This document reconsiders the architectural design of the transport
+      layer.
+      In particular, this document separates the transport layer into two
+      sublayers; the data path and the data flow layers.
+      The data path layer provides functionality on the data path, such as
+      connection handling, path quality and trajectory monitoring, and
+      congestion control.
       The data flow layer provides additional functionality upon the data path
-      layer, such as retransmission for reliable data delivery and transport
-      layer security.
+      layer, such as flow control for the receive buffer management,
+      retransmission for reliable data delivery, and transport layer security.
+      The data path layer multiplexes multiple data flow layer protocols and
+      provides data path information to the data flow layer to control data
+      transmissions, such as prioritization, multipath utilization, and data
+      duplication for redundancy.
       </t>
     </abstract>
   </front>
 
   <middle>
     <section title="Introduction">
-      <t>This document defines an architectural design of the transport layer.
-      Middleboxes such as TCP offloading and in-network computing.
+      <t>This document specifies two sublayers of the transport layer; the data
+      path and the data flow layers.
+      In this document, the transport layer's data path functionality, such as
+      bidirectional connection handling and congestion control, is separated
+      from the data flow functionality, such as flow control for the receive
+      buffer management, retransmission for reliable data delivery, and
+      transport layer security.
+      The data path and data flow layers provide the data path and the data flow
+      functionality, respectively.
       </t>
+      <t>This document does not intend to obsolete the transport layer or
+      violate the current Internet architecture.
+      This document reconsiders the transport layer to clarify the transport
+      layer's functionality and to invent data flow layer protocols for advanced
+      Internet technologies, such as middleboxes and in-network computing.
+      </t>
+    <!--</section>
+    <section title="Terminology">-->
       <t>The key words &quot;MUST&quot;, &quot;MUST NOT&quot;,
       &quot;REQUIRED&quot;, &quot;SHALL&quot;, &quot;SHALL NOT&quot;,
       &quot;SHOULD&quot;, &quot;SHOULD NOT&quot;, &quot;RECOMMENDED&quot;,
       &quot;MAY&quot;, and &quot;OPTIONAL&quot; in this
       document are to be interpreted as described in
-      <xref target="RFC2119">RFC 2119</xref>.</t>
+      <xref target="RFC2119">RFC 2119</xref>.
+      </t>
     </section>
 
-    <section title="Conventional layering and transport layer">
+    <section title="Conventional Layering and Transport Layer Functionality">
       <t>This section describes the conventional layering and transport layer
-      functionality.</t>
+        functionality.
+        It then summarizes the problems with the current architecture.
+      </t>
       <t><xref target="RFC1122">RFC 1122</xref> defines three communication
-      layers, link layer, Internet layer, and transport layer.
-      Link-layer protocols provide hop-by-hop packet delivery.
-      Internet layer protocols such as IP, ICMP, and IGMP provide datagram
-      delivery function and control.
-      <xref target="RFC1123">RFC 1123</xref> defines the application layer over
-      the transport layer.
+        layers, link layer, Internet layer, transport layer, and the interfaces
+        between these layers.
+        Link-layer protocols provide hop-by-hop data communications.
+        Internet layer protocols such as the Internet Protocol (IP), the
+        Internet Control Message Protocol (ICMP), and the Internet Group
+        Management Protocol (IGMP) provide fragmentation, hop-by-hop datagram
+        forwarding, and end-to-end datagram delivery.
+        <xref target="RFC1123">RFC 1123</xref> defines the interface between the
+        application layer and the transport layer.
       </t>
+      <t>The Internet design follows the end-to-end principle to keep the
+      simplicity of the Internet layer. Thus, the main functionality of the
+      Internet layer is to provide end-to-end reachability.
+      It does not guarantee datagram integrity, which means that packet loss,
+      duplication, corruption, or reordering may occur.
+      Over the Internet layer, the transport layer implements such
+      functionality on the end-hosts to achieve end-to-end communications.
+      </t>
+      <figure align="center" anchor="conventional-layering"
+        title="Conventional layering of Internet architecture">
+        <artwork align="left"><![CDATA[
++-------------------+                           +-------------------+
+| Application layer |<------------------------->| Application layer |
++-------------------+                           +-------------------+
+| Transport layer   |<------------------------->| Transport layer   |
++-------------------+   +-------------------+   +-------------------+
+| Internet layer    |<->| Internet layer    |<->| Internet layer    |
++-------------------+   +-------------------+   +-------------------+
+| Link layer        |<->| Link layer        |<->| Link layer        |
++-------------------+   +-------------------+   +-------------------+
+  End-host                Router                  End-host
+            ]]></artwork>
+      </figure>
       <t>The transport layer provides various functions over the IP.
-      <xref target="RFC0768">User Datagram Protocol (UDP)</xref> 
-      and <xref target="RFC0793">Transmission Control Protocol (TCP)</xref>
-      are the most commonly used transport layer protocols.
-      TCP implements flow control according to the receiver's capability,
-      retransmission for reliable communication, congestion control by packet
-      delivery statuses such as packet losses and delay.
+        <xref target="RFC0768">User Datagram Protocol (UDP)</xref> 
+        and <xref target="RFC0793">Transmission Control Protocol (TCP)</xref>
+        are the most commonly used transport layer protocols.
+        UDP is a connectionless transport protocol with a minimum header.
+        TCP implements flow control according to the receiver's buffer capacity,
+        retransmission for reliable communication, congestion control by a
+        packet delivery status such as packet loss and delay.
+        The transport layer may implement an end-to-end security function,
+        <xref target="RFC8446">Transport Layer Security (TLS)</xref>.
       </t>
-      <t>The Internet is designed to follow the end-to-end principle to keep the
-      simplicity of the IP layer.  Thus, the functionality of the IP layer is just
-      to provide end-to-end reachability.  It does not guarantee datagram
-      integrity, which means that packet loss, duplication, corruption, or
-      reordering may occur.  Over the IP layer, the transport layer implements
-      such functionality on the endhosts.  This is the fundamentals of the
-      Internet architecture.</t>
+      <t><xref target="conventional-layering" /> illustrates the conventional
+        layering of Internet architecture.
+        A router forwards an IP datagram to a next-hop router corresponding to
+        the destination address.
+        In this way, the Internet layer protocol, IP, provides end-to-end
+        reachability through hop-by-hop routing.
+        The transport layer provides additional functions for end-to-end
+        communications.
+      </t>
+      <t>As described above, the Internet layer's main functionality has been
+        end-to-end reachability with hop-by-hop packet forwarding based on
+        destination IP address.
+        Therefore, it is unaware of data paths.
+        Best-effort communications over ``dumb'' networks without the quality of
+        service (QoS) have been the Internet principle <xref target="RFC2768" />.
+        This end-to-end principle of the Internet has achieved a scalable
+        architecture.
+        However, computer networks' advancement introduced QoS and middleboxes to
+        achieve high-quality data communication and optimize communication over
+        distributed and heterogeneous computer networks.
+      </t>
+      <t><xref target="RFC2474">Differentiated Services, DiffServ</xref>,
+        is one of the technologies to implement QoS.
+        It enables autonomous and scalable service discrimination using an IP
+        header field to configure QoS for a data path.
+        <xref target="RFC8402">Segment Routing</xref> enables data path
+        configuration for individual flows by leveraging the source routing
+        paradigm.
+        Segment Routing is another technology to treat QoS.
+        Thus, QoS requires to be aware of data paths associated with data flows.
+      </t>
+      <t>Middleboxes are more complex than QoS.
+        They add various functions such as firewalls, TCP offloading, transcoding,
+        content caches, and in-network computing to a data path.
+        However, routing technologies over the IP have been leveraged to route
+        traffic through the middleboxes as the IP layer is not aware of data
+        paths.
+        If a middlebox is transparent to end-hosts, it should be installed at
+        the network gateway or redirected by policy-based routing or segment
+        routing to activate the function. 
+        Otherwise, an end-host should specify the middlebox as another end-host.
+      </t>
+
+      <t>Middleboxes interacting with the IP and the transport layers have
+      widely been deployed, such as firewalls, TCP offloading, transcoding,
+      content caches, and in-network computing.
+      Distributed computing technologies not relying on the end-to-end
+      principle, such as in-network computing and multi-access edge computing
+      (MEC), require new transport layer protocols.
+      </t>
+
+      <t>For example, congestion control algorithms rely on packet losses.
+      When a data path multiplex a stream and datagram flows, the stream flow's
+      congestion control might affect the other datagram flow's quality.
+      The Internet layer provides congestion information over the
+      <xref target="RFC3168">Explicit Congestion Notification (ECN)</xref>.
+      </t>
+
+
+
 
       <t>However, this conventional layering model is not always suitable for
       recent networked applications, especially for mobile/multiaccess edge
@@ -133,10 +239,10 @@
       <xref target="RFC4960">Stream Control Transmission Protocol (SCTP)</xref>
       </t>
 
-      <t>Quality of Service (QoS) <xref target="RFC2474">Diffserv</xref>.
+      <t>Quality of Service (QoS) 
       Congestion control.
       <xref target="RFC3168">Explicit Congestion Notification (ECN)</xref>
-      is added to the IP layer.
+      is added to the Internet layer.
       </t>
 
 
@@ -152,7 +258,7 @@
 +-------------------+   +-------------------+   +-------------------+
 | Data path layer   |<->| Data path layer   |<->| Data path layer   |
 +-------------------+   +-------------------+   +-------------------+
-| IP layer          |<->| IP layer          |<->| IP layer          |
+| Internet layer    |<->| Internet layer    |<->| Internet layer    |
 +-------------------+   +-------------------+   +-------------------+
 | Link layer        |<->| Link layer        |<->| Link layer        |
 +-------------------+   +-------------------+   +-------------------+
@@ -176,7 +282,7 @@
 +-------------------+   +-------------------+   +-------------------+
 | Data path layer   |<->| Data path layer   |<->| Data path layer   |
 +-------------------+   +-------------------+   +-------------------+
-| IP layer          |<->| IP layer          |<->| IP layer          |
+| Internet layer    |<->| Internet layer    |<->| Internet layer    |
 +-------------------+   +-------------------+   +-------------------+
 | Link layer        |<->| Link layer        |<->| Link layer        |
 +-------------------+   +-------------------+   +-------------------+
@@ -215,6 +321,10 @@
     characteristics (e.g., service level requirements) of transport layer
     protocols such as stream and datagram protocols. 
     </t>
+    <t>The data path layer supports both unidirectional and bidirectional paths.
+    A bidirectional path may be symmetric or asymmetric.
+    However, data path layer protocols may only support bidirectional paths.
+    </t>
     </section>
 
     <section anchor="data-flow-layer" title="Data Flow Layer">
@@ -234,6 +344,7 @@
     <section anchor="Discussion" title="Discussion: IP vs. Transport Layer">
     <t>This document proposes to separate the data path layer
     and data flow layer from the transport layer.
+    The IP provides hop-by-hop information, e.g., ICMP and ECN.
     </t>
     </section>
 
@@ -242,16 +353,29 @@
     </section>
 
     <section anchor="Security" title="Security Considerations">
-      <t>Payload encryption may be implemented at various layers.
-      <xref target="RFC6071">IPsec</xref> encrypts the payload of an IP
-      datagram.
-      Data path layer protocols are not visible to the middleboxes.
-      Therefore, data path layer protocols cannot be manipulated by
-      middleboxes in such cases.</t>
+      <t>End-to-end encryption becomes critical to Internet protocols for
+      privacy and security.
+      This document proposes to implement transport layer security at the data
+      flow layer.
+      The data path layer is visible to intermediate nodes, such as routers and
+      middleboxes, by design to process and manipulate a data path layer
+      protocol.
+      It exposes data path information.
+      Therefore, data path layer protocols must not include privacy-sensitive
+      information in the protocol header.
+      </t>
+      <t>
+      Data path layer protocols may not be visible to intermediate nodes if an
+      underlay protocol encrypts the payload.
+      For example, <xref target="RFC6071">IPsec</xref> encrypts the payload of
+      IP datagrams.
+      In such cases, intermediate nodes cannot process or manipulate data path
+      layer protocols.</t>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t></t>
+      <t>We thank Yusuke Doi and Masahiro Ishiyama for their comments and
+      review of this document.</t>
     </section>
 
   </middle>
@@ -266,10 +390,12 @@
       &RFC1123;
       &RFC2119;
       &RFC2474;
+      &RFC2768;
       &RFC3168;
       &RFC4340;
       &RFC4960;
       &RFC6071;
+      &RFC8402;
       &RFC8446;
     </references>
     <!--<references title="Informative References">
