@@ -65,7 +65,7 @@
     <keyword>Reliability</keyword>
     
     <abstract>
-      <t>This document reconsiders the architectural design of the transport
+      <t>This document reviews the architectural design of the transport
       layer.
       In particular, this document separates the transport layer into two
       sublayers; the data path and the data flow layers.
@@ -92,14 +92,19 @@
       from the data flow functionality, such as flow control for the receive
       buffer management, retransmission for reliable data delivery, and
       transport layer security.
+      This document reviews the transport layer's functionality from the
+      viewpoint of data paths and data flows in
+      <xref target="architecture-review" />.
+      It then specifies the data path layer and the data flow layer in
+      <xref target="specification" />.
       The data path and data flow layers provide the data path and the data flow
       functionality, respectively.
       </t>
-      <t>This document does not intend to obsolete the transport layer or
-      violate the current Internet architecture.
-      This document reconsiders the transport layer to clarify the transport
+      <t>This document reviews the transport layer to clarify the transport
       layer's functionality and to invent data flow layer protocols for advanced
       Internet technologies, such as middleboxes and in-network computing.
+      Hence, this document does not intend to obsolete the transport layer or
+      violate the current Internet architecture.
       </t>
     <!--</section>
     <section title="Terminology">-->
@@ -112,8 +117,9 @@
       </t>
     </section>
 
-    <section title="Conventional Layering and Transport Layer Functionality">
-      <t>This section describes the conventional layering and transport layer
+    <section anchor="architecture-review"
+        title="Transport Layer Functionality Review">
+      <t>This section reviews the conventional layering and transport layer
         functionality.
         It then summarizes the transport layer functionality by distinguishing
         data paths and data flows.
@@ -137,7 +143,8 @@
           It does not guarantee datagram integrity, which means that packet
           loss, duplication, corruption, or reordering may occur.
           Over the Internet layer, the transport layer implements such
-          functionality on the end-hosts to achieve end-to-end communications.
+          functionality to provide datagram integrity on the end-hosts to
+          achieve end-to-end communications.
         </t>
         <figure align="center" anchor="conventional-layering"
           title="Conventional layering of Internet architecture">
@@ -250,21 +257,17 @@
           Therefore, congestion control is associated with a data path, while
           flow control is associated with the end-hosts.
         </t>
-
-        <t>Furthermore, many transport layer protocols, such as TCP,
+        <t>As discussed above, congestion control should be performed on the
+          associated data path.
+          However, in current transport layer protocols such as TCP,
           <xref target="RFC4340">Datagram Congestion Control Protocol (DCCP)</xref>,
-          and
-          <xref target="RFC4960">Stream Control Transmission Protocol (SCTP)</xref>,
-          implement congestion control.
-          However, an individual flow performs congestion control even if
-          multiple flows are multiplexed over the same data path.
+          and <xref target="RFC4960">Stream Control Transmission Protocol (SCTP)</xref>,
+          an individual flow independently performs congestion control even if
+          the same data path multiplexes multiple flows.
           Therefore, multiple flows cannot collectively perform congestion
           control for the data path.
-          For example, congestion control algorithms rely on packet losses.
-          When a data path multiplexes a TCP and a UDP flows, the TCP
-          flow's congestion control may affect the other UDP flow's quality. 
-          Thus, congestion control should be performed on the associated data
-          path.
+          For example, when a data path multiplexes a TCP and a UDP flows, the
+          TCP flow's congestion control may affect the other UDP flow's quality.
         </t>
       </section>
 
@@ -341,7 +344,7 @@
     </section>
 
 
-    <section anchor="transport-layer" title="Transport Sublayers">
+    <section anchor="specification" title="Transport Sublayers">
       <t>As summarized in <xref target="data-path-flow-summary" />, this
       document separates data paths and data flows from the transport layer. 
       Hence, this document divides the transport layer into two sublayers;
@@ -397,19 +400,19 @@
         <t>This document does not specify any data path protocols or data flow
           protocols, but the architectural design of the data path and the data
           flow layers.
-          To understand better, this section describes the use cases of the data
-          path and the data flow layers.
+          For better understanding, this section describes the use cases of the
+          data path and the data flow layers.
         </t>
+        <section title="Multipath Transport Protocols">
+          <figure align="center" anchor="example-multipath"
+              title="An example of multipath data communication">
+            <preamble>Hosts A and B communicate with each other
+              over multiple data paths; Path R1-DPR3-R2 and Path DPR4-R2.
+              R1 and R2 are IP routers.
+              DPR3 and DPR4 are data path routers that treat data path layer
+              protocols.</preamble>
 
-        <figure align="center" anchor="example-multipath"
-            title="An example of multipath data communication">
-          <preamble>Hosts A and B communicate with each other
-            over multiple data paths; Path R1-DPR3-R2 and Path DPR4-R2.
-            R1 and R2 are IP routers.
-            DPR3 and DPR4 are data path routers that treat data path layer
-            protocols.</preamble>
-
-          <artwork align="center"><![CDATA[
+            <artwork align="center"><![CDATA[
                *----*     *------*
             +--| R1 |-----| DPR3 |--+
 +--------+_/   *----*     *------*   \_*----*     +--------+
@@ -419,14 +422,14 @@
                           *------*
               ]]></artwork>
 
-          <!--<postamble></postamble>-->
-        </figure>
+            <!--<postamble></postamble>-->
+          </figure>
 
-        <figure align="center" anchor="layer-data-path"
-          title="The data path layer over the Internet layer">
-          <!--<preamble>Preamble text - can be omitted or empty.</preamble>-->
+          <figure align="center" anchor="layer-data-path"
+            title="The data path layer over the Internet layer">
+            <!--<preamble>Preamble text - can be omitted or empty.</preamble>-->
 
-          <artwork align="left"><![CDATA[
+            <artwork align="left"><![CDATA[
 +-------------------+                           +-------------------+
 | Application layer |<------------------------->| Application layer |
 +-------------------+                           +-------------------+
@@ -439,31 +442,31 @@
 | Link layer        |<->| Link layer        |<->| Link layer        |
 +-------------------+   +-------------------+   +-------------------+
   End-host                Data Path Router        End-host
-              ]]></artwork>
+                ]]></artwork>
 
-          <!--<postamble>The middlebox intercepts the data path layer protocol.
-          For example, the middlebox performs congestion control.
-          </postamble>-->
-        </figure>
+            <!--<postamble>The middlebox intercepts the data path layer protocol.
+            For example, the middlebox performs congestion control.
+            </postamble>-->
+          </figure>
 
-        <t><xref target="example-multipath" /> shows an example of multipath
-          data communication over two data paths.
-          Data path routers manipulate the header of a data path layer protocol,
-          as illustrated in <xref target="layer-data-path" />.
-          It may add a data path identifier to the header in order to report the
-          trajectory to the end-host.
-          The end-host can detect trajectory changes with this data path
-          identifier.
-          It can also detect any shared routers on the multiple paths, which
-          would be a potential single point of failure for end-to-end
-          communication.
-        </t>
+          <t><xref target="example-multipath" /> shows an example of multipath
+            data communication over two data paths.
+            Data path routers manipulate the header of a data path layer protocol,
+            as illustrated in <xref target="layer-data-path" />.
+            It may add a data path identifier to the header in order to report the
+            trajectory to the end-host.
+            The end-host can detect trajectory changes with this data path
+            identifier.
+            It can also detect any shared routers on the multiple paths,
+            potentially a single point of failure for end-to-end communication.
+          </t>
+        </section>
+        <section title="Middleboxes">
+          <figure align="center" anchor="layer-middlebox"
+              title="Data path layer and data flow layer">
+            <!--<preamble>Preamble text - can be omitted or empty.</preamble>-->
 
-        <figure align="center" anchor="layer-middlebox"
-            title="Data path layer and data flow layer">
-          <!--<preamble>Preamble text - can be omitted or empty.</preamble>-->
-
-          <artwork align="left"><![CDATA[
+            <artwork align="left"><![CDATA[
 +-------------------+                           +-------------------+
 | Application layer |<------------------------->| Application layer |
 +-------------------+   +-------------------+   +-------------------+
@@ -476,18 +479,20 @@
 | Link layer        |<->| Link layer        |<->| Link layer        |
 +-------------------+   +-------------------+   +-------------------+
   Client                  MiddleBox               Server
-              ]]></artwork>
+                ]]></artwork>
 
-          <postamble>The middlebox intercepts the data flow layer protocol.
-          For example, the middlebox performs in-network computing.
-          </postamble>
-        </figure>
+            <postamble>The middlebox intercepts the data flow layer protocol.
+            For example, the middlebox performs in-network computing.
+            </postamble>
+          </figure>
 
-        <t>The data path and data flow layers are defined
-        as shown in <xref target="layer-middlebox" />.
-        TO BE ADDED.
-        </t>
-
+          <t>The data path and data flow layers are defined
+          as shown in <xref target="layer-middlebox" />.
+          TO BE ADDED.
+          </t>
+        </section>
+        <section title="In-Network Computing">
+        </section>
       </section>
     
     </section>
@@ -519,14 +524,18 @@
         the transport layer, but is introduced for interoperability with
         middleboxes.
       </t>
+      <t>
+      </t>
     </section>
 
+    <!--
     <section anchor="Discussion" title="Discussion: IP vs. Transport Layer">
     <t>This document proposes to separate the data path layer
       and data flow layer from the transport layer.
       The IP provides hop-by-hop information, e.g., ICMP and ECN.
     </t>
     </section>
+    -->
 
     <section anchor="IANA" title="IANA Considerations">
       <t>This document does not have IANA Considerations.</t>
