@@ -276,6 +276,11 @@
           Accordingly, multiple flows of these protocols may use an identical
           data path without recognizing it.
         </t>
+        <t>Multipath protocols are also responsible for inverse multiplexing to
+          split a data stream into multiple data paths.
+          This inverse multiplexing is independent of data paths except for
+          congestion control.
+        </t>
       </section>
 
       <section title="Reliable Data Communication">
@@ -329,6 +334,7 @@
           <t>Retransmission for reliable data communication</t>
           <t>Flow control for receive-buffer management</t>
           <t>End-to-end security</t>
+          <t>Inverse multiplexing for multipath protocols</t>
         </list>
       </section>
 
@@ -372,10 +378,14 @@
       </section>
 
       <section anchor="data-flow-layer" title="Data Flow Layer">
-        <t>The data flow layer may implement various functions over the data
-          path layer.
+        <t>The data flow layer may implement various functions for end-to-end
+          data communication over the data path layer.
           Data flow layer protocols may be stream, datagram, or message-oriented
-          protocols.</t>
+          protocols.
+          Potential data flow functions are retransmission for reliable data
+          communication, flow control for receive-buffer management, and
+          end-to-end security.
+        </t>
         <t>A data flow layer protocol may implement a multipath transport
           protocol using multiple bidirectional paths over the data path layer,
           a retransmission function for reliable data communication, and a
@@ -444,13 +454,13 @@
           trajectory to the end-host.
           The end-host can detect trajectory changes with this data path
           identifier.
-          It can also detect any common routers on the multiple paths, which
-          would be a potential single point of failure for the end-to-end
+          It can also detect any shared routers on the multiple paths, which
+          would be a potential single point of failure for end-to-end
           communication.
         </t>
 
         <figure align="center" anchor="layer-middlebox"
-        title="Data path layer and data flow layer">
+            title="Data path layer and data flow layer">
           <!--<preamble>Preamble text - can be omitted or empty.</preamble>-->
 
           <artwork align="left"><![CDATA[
@@ -484,11 +494,30 @@
 
     <section title="Implementation">
       <t>The data path layer may be implemented over UDP for interoperability
-      with the current Internet operations.
-      It is because other protocols than ICMP, TCP, and UDP may be filtered on
-      the Internet.
-      Data path layer protocols must implement
-      <xref target="RFC8899">MTU discovery</xref>.
+        with the current Internet operations.
+        It is because other protocols than ICMP, TCP, and UDP may be filtered on
+        the Internet.
+        Data path layer protocols must implement
+        <xref target="RFC8899">MTU discovery</xref>.
+      </t>
+     <figure align="center" anchor="implementation"
+        title="Implementation">
+      <preamble>LH: Link-layer protocol header, IPH: IP header,
+        UDPH: UDP header, DPH: Data path layer protocol header,
+        DFH: Data flow layer protocol header</preamble>
+      <artwork align="left"><![CDATA[
++----+-----+------+-----+-----+------------------+-----------+
+| LH | IPH | UDPH | DPH | DFH | Payload          | (Trailer) |
++----+-----+------+-----+-----+------------------+-----------+
+            ]]></artwork>
+      </figure>
+      <t><xref target="implementation" /> illustrates an example packet format
+        of a data flow layer protocol.
+        The current transport layer protocol integrates a data path protocol
+        and a data flow protocol headers.
+        In this figure, the UDP header does not provide the functionality of
+        the transport layer, but is introduced for interoperability with
+        middleboxes.
       </t>
     </section>
 
