@@ -36,7 +36,7 @@
 
 <!--ipr="noDerivativeWorks2026", full2026, trust200902-->
 <!-- trust200902, noDerivativeWorks2026 -->
-<rfc docName="draft-asai-tsvwg-rearch-00" ipr="trust200902" category="std" consensus="true">
+<rfc docName="draft-asai-tsvwg-transport-review-00" ipr="trust200902" category="std" consensus="true">
 
   <front>
     <title abbrev="Data Path and Data Flow Layers">
@@ -651,7 +651,7 @@
 +------+                                    +------+
 | App. |<---------------------------------->| App. |
 +------+   +------+              +------+   +------+
-| DF   |<->| DF   |<------------>| DF   |   | DF   |
+| DF   |<->| DF   |<------------>| DF   |<->| DF   |
 +------+   +------+              +------+   +------+
 | DP   |<->| DP   |<------------>| DP   |<->| DP   |
 +------+   +------+   +------+   +------+   +------+
