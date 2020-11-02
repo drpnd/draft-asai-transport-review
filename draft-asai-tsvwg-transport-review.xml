@@ -7,10 +7,12 @@
 <!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC2474 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
 <!ENTITY RFC2768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2768.xml">
+<!ENTITY RFC3022 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3022.xml">
 <!ENTITY RFC3168 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml">
 <!ENTITY RFC4340 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4340.xml">
 <!ENTITY RFC4960 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml">
 <!ENTITY RFC6071 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml">
+<!ENTITY RFC6275 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6275.xml">
 <!ENTITY RFC6347 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6347.xml">
 <!ENTITY RFC7413 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7413.xml">
 <!ENTITY RFC8402 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8402.xml">
@@ -36,7 +38,7 @@
 
 <!--ipr="noDerivativeWorks2026", full2026, trust200902-->
 <!-- trust200902, noDerivativeWorks2026 -->
-<rfc docName="draft-asai-tsvwg-transport-review-00" ipr="trust200902" category="std" consensus="true">
+<rfc docName="draft-asai-tsvwg-transport-review-00" ipr="trust200902" category="std" consensus="yes">
 
   <front>
     <title abbrev="Data Path and Data Flow Layers">
@@ -56,7 +58,7 @@
       </address>
     </author>
 
-    <date month="Oct" day="29" year="2020" />
+    <date month="Nov" day="2" year="2020" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -73,8 +75,8 @@
       In particular, this document separates the transport layer into two
       sublayers; the data path and the data flow layers.
       The data path layer provides functionality on the data path, such as
-      connection handling, path quality and trajectory monitoring, and
-      congestion control.
+      connection handling, path quality and trajectory monitoring,
+      waypoint management, and congestion control.
       The data flow layer provides additional functionality upon the data path
       layer, such as flow control for the receive buffer management,
       retransmission for reliable data delivery, and transport layer security.
@@ -91,7 +93,8 @@
       <t>This document specifies two sublayers of the transport layer; the data
       path and the data flow layers.
       In this document, the transport layer's data path functionality, such as
-      bidirectional connection handling and congestion control, is separated
+      bidirectional connection handling, waypoint management,
+      and congestion control, is separated
       from the data flow functionality, such as flow control for the receive
       buffer management, retransmission for reliable data delivery, and
       transport layer security.
@@ -216,6 +219,7 @@
         <t>Middleboxes are more complex than QoS.
           They add various functions such as firewalls, TCP offloading,
           transcoding, and content caches to a data path.
+          These functions require to be aware of waypoints to be activated.
           Routing technologies with packet classification using the IP and the
           transport protocol headers have collectively been leveraged to route
           traffic through the middleboxes as the IP layer is not aware of data
@@ -329,16 +333,16 @@
         <t>As described above, the transport layer functionality is summarized
         by distinguishing data paths and data flows as follows:</t>
         <t>The following functionality is categorized as data path functions.
-        </t>
         <list style="symbols">
-          <t>Trajectory monitoring</t>
+          <t>In-band trajectory monitoring</t>
+          <t>Waypoint management</t>
           <t>Bidirectional connection establishment</t>
           <t>Data path quality (congestion) monitoring and congestion control</t>
           <t>Data flow multiplexing</t>
           <t>Packet duplication</t>
         </list>
-        <t>The following functionality is categorized as data flow functions.
         </t>
+        <t>The following functionality is categorized as data flow functions.
         <list style="symbols">
           <t>Retransmission for reliable data communication</t>
           <t>Flow control for receive-buffer management</t>
@@ -346,6 +350,7 @@
           <t>End-to-end security</t>
           <t>Inverse multiplexing for multipath protocols</t>
         </list>
+        </t>
       </section>
 
     </section>
@@ -379,12 +384,6 @@
             The in-band trajectory monitoring function enables an upper-layer
             protocol to detect path change events and a single point of failure
             for multipath protocols.
-            Two approaches achieve this functionality; 1) in-band network
-            telemetry or
-            <xref target="I-D.ietf-ippm-ioam-data">in-situ OAM</xref>,
-            and 2) stateful path management with underlay technologies, such as
-            Segment Routing.
-            Other alternative approaches may be used.
           </t>
           <figure align="center" anchor="appending"
               title="Appending data path router identifiers to distinguish the data path">
@@ -404,18 +403,49 @@
            +-----+-+----...----+
                 ]]></artwork>
           </figure>
-          <t><xref target="appending" /> shows an example of the former approach.
+          <t>One approach to implement this functionality is prepending,
+            appending, or XOR-ing device identifiers like in-band network
+            telemetry or
+            <xref target="I-D.ietf-ippm-ioam-data">in-situ OAM</xref>
+            by data path layer protocol's routers.
+            <xref target="appending" /> shows an example of in-band trajectory
+            monitoring.
             A router that handles a data path layer protocol appends the router
             identifier to the header.
             In case the upper-layer protocol does not require the path
             information but path change events, the router can apply an XOR
             operation with a hashed identifier to a fixed-length field.
+            Other alternative approaches may be used.
           </t>
           <t>The latter approach separates the control plane and the data plane.
           The control plane manages the data path, and the data plane monitors
           if packets pass through the dedicated data path.
           The data path control may leverage underlay protocols such as Segment
           Routing.</t>
+        </section>
+        <section title="Waypoint management">
+          <t>The data path layer may support waypoint management functionality.
+            The in-band trajectory monitoring functionality described above does
+            not provide the functionality to designate the data path's
+            waypoints.
+            However, some middleboxes such as firewalls and in-network computing
+            require to designate waypoints to activate the in-network functions.
+          </t>
+          <t>A data path layer protocol may define a specification to control
+            the waypoints of a data path.
+            There are two approaches to designate waypoints over the Internet
+            layer; 1) setting a waypoint as the destination IP address
+            and 2) using routing technologies such as source routing and
+            policy-based routing.
+            The former approach includes
+            <xref target="RFC3022">Network Address Translation (NAT)</xref>
+            and proxy services.
+            The latter approach may leverage underlay protocols to designate
+            waypoints, such as Segment Routing and
+            <xref target="RFC6275">IPv6 Type 2 Routing Header</xref>.
+            Other alternative approaches may be used in a data path layer
+            protocol.
+          </t>
         </section>
         <section title="Bidirectional connection establishment">
           <t>The data path layer should support both unidirectional and
@@ -562,7 +592,6 @@
                           *------*
             ]]></artwork>
         </figure>
-
         <t><xref target="example-multipath" /> shows an example of multipath
           data communication over two data paths.
           The end-hosts A and B establish two bidirectional data paths;
@@ -573,7 +602,9 @@
           The data flow layer protocol performs flow control and inverse
           multiplexing into these data paths.
         </t>
-        <t>We assume that the data path routers manipulate the header of a data
+        <t>Multipath transport protocols may leverage in-band trajectory
+          monitoring to detect a shared waypoint. 
+          We assume that the data path routers manipulate the header of a data
           path layer protocol.
           They add the router identifier to the data path layer protocol's
           header to report the trajectory to the end-hosts.
@@ -615,13 +646,14 @@
               ]]></artwork>
         </figure>
         <t><xref target="layer-congestion-control" /> illustrates an example of
-          a communication model for congestion control acceleration.
+          a communication model for congestion control acceleration using the
+          data path layer.
           The accelerator or the receiver reports the data path quality to the
           sender on the data path layer to perform congestion control.
           There are various ways to measure data path quality.
           For example, data path routers may use the buffer capacity in the same
           way as ECN.
-          If a data path router is capable of detecting packet losses for a
+          If a data path router can detect packet losses for a
           connection of data path layer protocols, the packet losses or
           statistics may be used to report the data path quality.
           The data path quality report by the accelerator enables the fast
@@ -635,8 +667,16 @@
         <t>In-network computing
           <xref target="I-D.kunze-coin-industrial-use-cases" />
           is a novel distributed computing paradigm.
-          It requires to be aware of data paths because computing components are
-          placed in between end-hosts.
+          It requires to be aware of the data path's waypoints
+          because computing components are placed in between end-hosts.
+          The message-oriented protocol may adopt the pub/sub communication
+          model, widely used in machine-to-machine communication.
+        </t>
+        <t>The data path layer establishes a data path
+          while designating the waypoints to perform in-network computing.
+          The data flow layer over the data path implements a
+          message-oriented protocol or a stream protocol to feed data into
+          in-network computing nodes.
           The message-oriented protocol may adopt the pub/sub communication
           model, widely used in machine-to-machine communication.
         </t>
@@ -645,36 +685,35 @@
           <preamble>App., DF, DP, IP, and Link denote the application layer,
             the data flow layer, the data path layer, the IP, and the link
             layer, respectively. H1 and H2 are end-hosts, C1 and C2
-            are in-network computing nodes, and R1 is an IP router.</preamble>
+            are in-network computing nodes, P1 is a data path router,
+            and R1 is an IP router.</preamble>
 
           <artwork align="left"><![CDATA[
-+------+                                    +------+
-| App. |<---------------------------------->| App. |
-+------+   +------+              +------+   +------+
-| DF   |<->| DF   |<------------>| DF   |<->| DF   |
-+------+   +------+              +------+   +------+
-| DP   |<->| DP   |<------------>| DP   |<->| DP   |
-+------+   +------+   +------+   +------+   +------+
-| IP   |<->| IP   |<->| IP   |<->| IP   |<->| IP   |
-+------+   +------+   +------+   +------+   +------+
-| Link |<->| Link |<->| Link |<->| Link |<->| Link |
-+------+   +------+   +------+   +------+   +------+
++------+                                               +------+
+| App. |<--------------------------------------------->| App. |
++------+              +------+              +------+   +------+
+| DF   |<------------>| DF   |<------------>| DF   |<->| DF   |
++------+   +------+   +------+              +------+   +------+
+| DP   |<->| DP   |<->| DP   |<------------>| DP   |<->| DP   |
++------+   +------+   +------+   +------+   +------+   +------+
+| IP   |<->| IP   |<->| IP   |<->| IP   |<->| IP   |<->| IP   |
++------+   +------+   +------+   +------+   +------+   +------+
+| Link |<->| Link |<->| Link |<->| Link |<->| Link |<->| Link |
++------+   +------+   +------+   +------+   +------+   +------+
 
- +----+     *----*     *----*     *----*     +----+
- | H1 |-----| C1 |-----| R1 |-----| C2 |-----| H2 |
- +----+     *----*     *----*     *----*     +----+
+ +----+     *----*     *----*     *----*     *----*     +----+
+ | H1 |-----| P1 |-----| C1 |-----| R1 |-----| C2 |-----| H2 |
+ +----+     *----*     *----*     *----*     *----*     +----+
               ]]></artwork>
         </figure>
-        <t>The data path layer establishes a data path to perform in-network
-          computing.
-          The data flow layer over the data path may implement a message-oriented
-          protocol to feed data into in-network computing nodes.
-          <xref target="layer-in-network-computing" /> illustrates an example
+        <t><xref target="layer-in-network-computing" /> illustrates an example
           of the communication model of in-network computing.
-          A data path is established between H1 and H2. H1 transmits messages
-          to H2 over a data flow layer protocol, and C1 and C2 terminate the
-          data flow layer protocol and process the messages according to the
-          programs running on C1 and C2.
+          A data path is established between H1 and H2.
+          A data path layer protocol designates C1 and C2 as the waypoints.
+          Over the established data path, H1 transmits messages to H2 using a
+          data flow layer protocol.
+          C1 and C2 process the messages according to the programs
+          running on C1 and C2.
         </t>
       </section>
       <section title="Flow Arbitration">
@@ -692,22 +731,60 @@
           This flow arbitration is crucial in coexisting deadline-based and
           best-effort flows.
         </t>
+      <figure align="center" anchor="fig-flow-arbitration"
+            title="An example of flow arbitration over multiple data paths">
+          <preamble>H1, H2, H3, and H4 are end-hosts.
+            R1, R2, and R3 are IP routers.
+            P1 is a data path router that support the data path quality
+            monitoring function.
+          </preamble>
+
+          <artwork align="left"><![CDATA[
++----+                           *----*     +----+
+| H1 |--+                     +--| R2 |-----| H3 |
++----+   \_*----*     *----*_/   *----*     +----+
+          _| R1 |-----| P1 |_    
++----+   / *----*     *----* \   *----*     +----+
+| H2 |--+                     +--| R3 |-----| H4 |
++----+                           *----*     +----+
+              ]]></artwork>
+        </figure>
+        <t>Moreover, the data path layer may support data path quality
+          monitoring for multiple data paths.
+          If data path routers monitor multiple data paths' bandwidth capacity,
+          they can report the estimated capacity to arbitrate multiple flows
+          over the data paths.
+          <xref target="fig-flow-arbitration" /> shows an example flow
+          arbitration over multiple data paths.
+          Suppose data flows X and Y are over the data paths H1-R1-P1-R2-H3 and
+          H2-R1-P1-R3-H4, respectively;
+          the data path router P1 can monitor the data path quality such as
+          packet losses for these data paths.
+          If the bandwidth utilization reaches the capacity, the data path
+          router requests resource arbitration.
+          A flow may reduce the data rate using the flow control mechanism in
+          the data flow layer if its priority is not high.
+          Thus, these two flows can autonomously perform the flow arbitration.
+          This flow arbitration may fail and perform best-effort communication,
+          such in case both flows are the high priority
+          and do not reduce the data rate.
+        </t>
       </section>
     </section>
 
-    <section title="Implementation">
+    <section title="Implementation Considerations">
       <t>Although this document does not specify the data path layer and the
         data flow layer protocols, it discusses the implementation of these
         protocols' specifications. 
         The data path layer may be implemented over UDP for interoperability
-        with the current Internet operations.
-        It is because other protocols than ICMP, TCP, and UDP may be filtered on
+        with the current Internet operations
+        because other protocols than ICMP, TCP, and UDP may be filtered on
         the Internet.
         Data path layer protocols must implement the
-        <xref target="RFC8899">maximum transmission unit (MTU() discovery</xref>.
+        <xref target="RFC8899">maximum transmission unit (MTU) discovery</xref>.
       </t>
      <figure align="center" anchor="implementation"
-        title="Implementation">
+        title="An implementation of data path layer and data flow layer protocols over UDP">
       <preamble>LH: Link-layer protocol header, IPH: IP header,
         UDPH: UDP header, DPH: Data path layer protocol header,
         DFH: Data flow layer protocol header</preamble>
@@ -718,14 +795,19 @@
             ]]></artwork>
       </figure>
       <t><xref target="implementation" /> illustrates an example packet format
-        of a data flow layer protocol.
-        The current transport layer protocol integrates a data path protocol
-        and a data flow protocol headers.
-        In this figure, the UDP header does not provide the functionality of
-        the transport layer, but is introduced for interoperability with
-        middleboxes.
+        of data path layer and data flow layer protocols over UDP.
+        <!--The current transport layer protocol integrates a data path protocol
+        and a data flow protocol headers.-->
+        In this figure, the UDP header is not intended to provide
+        the transport layer's functionality
+        but is introduced for interoperability with existing middleboxes
+        on the Internet.
       </t>
-      <t>
+      <t>A data path layer protocol may use hop-by-hop UDP connections to
+        designate waypoints like an overlay network.
+        Otherwise, data path routers require to leverage routing technologies
+        such as Segment Routing and policy-based routing to support waypoint
+        management.
       </t>
     </section>
 
@@ -782,10 +864,12 @@
       &RFC2119;
       &RFC2474;
       &RFC2768;
+      &RFC3022;
       &RFC3168;
       &RFC4340;
       &RFC4960;
       &RFC6071;
+      &RFC6275;
       &RFC6347;
       &RFC7413;
       &RFC8402;
