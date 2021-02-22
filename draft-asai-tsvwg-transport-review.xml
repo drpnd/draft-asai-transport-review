@@ -473,15 +473,15 @@
           segmentation, or reassembly. Instead, the Internet layer or the data
           flow layer provide these functions.
         </t>
-        <t>The data path layer may implement in-band trajectory monitoring,
+        <t>The data path layer MAY implement in-band trajectory monitoring,
           bidirectional connection establishment, data
           path quality monitoring and congestion control,
           data flow multiplexing, and packet duplication.
-          A data path layer protocol may implement other functions related to
+          A data path layer protocol MAY implement other functions related to
           data paths.
         </t>
         <section title="In-band trajectory monitoring">
-          <t>The data path layer may provide an in-band trajectory monitoring
+          <t>The data path layer MAY provide an in-band trajectory monitoring
             function.
             The in-band trajectory monitoring function enables an upper-layer
             protocol to detect path change events and a single point of failure
@@ -517,23 +517,23 @@
             In case the upper-layer protocol does not require the path
             information but path change events, the router can apply an XOR
             operation with a hashed identifier to a fixed-length field.
-            Other alternative approaches may be used.
+            Other alternative approaches MAY be used.
           </t>
           <t>The latter approach separates the control plane and the data plane.
           The control plane manages the data path, and the data plane monitors
           if packets pass through the dedicated data path.
-          The data path control may leverage underlay protocols such as Segment
+          The data path control MAY leverage underlay protocols such as Segment
           Routing.</t>
         </section>
         <section title="Waypoint management">
-          <t>The data path layer may support waypoint management functionality.
+          <t>The data path layer MAY support waypoint management functionality.
             The in-band trajectory monitoring functionality described above does
             not provide the functionality to designate the data path's
             waypoints.
             However, some middleboxes such as firewalls and in-network computing
             require to designate waypoints to activate the in-network functions.
           </t>
-          <t>A data path layer protocol may define a specification to control
+          <t>A data path layer protocol MAY define a specification to control
             the waypoints of a data path.
             There are two approaches to designate waypoints over the Internet
             layer; 1) setting a waypoint as the destination IP address
@@ -542,43 +542,43 @@
             The former approach includes
             <xref target="RFC3022">Network Address Translation (NAT)</xref>
             and proxy services.
-            The latter approach may leverage underlay protocols to designate
+            The latter approach MAY leverage underlay protocols to designate
             waypoints, such as Segment Routing and
             <xref target="RFC6275">IPv6 Type 2 Routing Header</xref>.
-            Other alternative approaches may be used in a data path layer
+            Other alternative approaches MAY be used in a data path layer
             protocol.
           </t>
         </section>
         <section title="Bidirectional connection establishment">
-          <t>The data path layer should support both unidirectional and
+          <t>The data path layer SHOULD support both unidirectional and
             bidirectional paths.
-            A bidirectional path may be symmetric or asymmetric.
+            A bidirectional path MAY be symmetric or asymmetric.
             As the characteristics of unidirectional and bidirectional paths are
-            different, some data path layer protocols may only support either
+            different, some data path layer protocols MAY only support either
             unidirectional or bidirectional paths.
           </t>
-          <t>A data path protocol supporting bidirectional data paths should
+          <t>A data path protocol supporting bidirectional data paths SHOULD
             implement a handshake mechanism to establish a bidirectional
             connection, such as a 3-way handshake of TCP and a 4-way handshake
             of SCTP.
-            It may provide a 0-RTT connection establishment feature such as
+            It MAY provide a 0-RTT connection establishment feature such as
             <xref target="RFC8446">TLS 1.3</xref>
             and <xref target="RFC7413">TCP Fast Open</xref>.
           </t>
         </section>
         <section title="Data path quality (congestion) monitoring and congestion control">
-          <t>The data path layer should implement congestion control.
+          <t>The data path layer SHOULD implement congestion control.
             However, Data path layer protocols supporting only unidirectional
-            paths may not implement congestion control because it cannot
+            paths MAY not implement congestion control because it cannot
             implement congestion or data path quality reporting.
           </t>
           <t>Congestion control is performed based on data path quality or
             congestion reporting from the receiver end-host or intermediate
             nodes that process a data path layer protocol.
-            Data path quality or congestion signals may be packet losses, delay,
+            Data path quality or congestion signals MAY be packet losses, delay,
             or ECN, as used in many transport layer protocols.
             Other signals or metrics, such as in-band network telemetry
-            information, may be used.
+            information, MAY be used.
           </t>
         </section>
         <section title="Data flow multiplexing">
@@ -587,41 +587,41 @@
             layer protocols such as stream and datagram protocols. </t>
         </section>
         <section title="Packet duplication">
-          <t>On a lossy data path, a data path layer protocol may implement
+          <t>On a lossy data path, a data path layer protocol MAY implement
             packet duplication for improving reliability.
-            However, the data path layer should not provide retransmission
+            However, the data path layer SHOULD NOT provide retransmission
             because it requires significant resources.
           </t>
         </section>
         <section title="Data path security">
-          <t>A data path layer protocol may implement data path security.
+          <t>A data path layer protocol MAY implement data path security.
             Data path security provides a security function
             between data path routers.
             As pointed out in <xref target="security-review" />,
             the data path layer assumes middleboxes
             that terminate a security function.
             Therefore, data (payload) encryption provided by data path security
-            may be terminated at a data path router.
+            MAY be terminated at a data path router.
             In addition to encryption,
             other security functions,
             such as authentication, authorization, and accounting
             for a data path router,
-            may be implemented as data path security.
+            MAY be implemented as data path security.
           </t>
         </section>
       </section>
 
       <section anchor="data-flow-layer" title="Data Flow Layer">
-        <t>The data flow layer may implement various functions for end-to-end
+        <t>The data flow layer MAY implement various functions for end-to-end
           data communication over the data path layer.
-          Data flow layer protocols may be stream, datagram, or message-oriented
+          Data flow layer protocols MAY be stream, datagram, or message-oriented
           protocols.
-          Middleboxes, MEC nodes, or in-network computing nodes may process data
+          Middleboxes, MEC nodes, or in-network computing nodes MAY process data
           flow layer protocols.
-          Therefore, a node processing data flow layer protocols should be as
+          Therefore, a node processing data flow layer protocols SHOULD be as
           ``smart'' as end-hosts.
         </t>
-        <t>A data flow layer protocol may implement a retransmission function
+        <t>A data flow layer protocol MAY implement a retransmission function
           for reliable data communication, a flow control mechanism for
           receive-buffer management, flow prioritization for effective network
           resource utilization, a security extension such as TLS and DTLS,
@@ -629,12 +629,12 @@
           over the data path layer.
         </t>
         <section title="Retransmission for reliable data communication">
-          <t>A data flow layer protocol may provide retransmission for reliable
+          <t>A data flow layer protocol MAY provide retransmission for reliable
             data communication.
-            To this end, a node implementing the data flow layer protocol must
+            To this end, a node implementing the data flow layer protocol MUST
             equip a transmit buffer for retransmission to retransmit lost
             corrupted packets.
-            It must also equip a receive buffer to reassemble a stream and a
+            It MUST also equip a receive buffer to reassemble a stream and a
             message from a sequence of packets in a stream and message-oriented
             data flow layer protocols.
             The receive buffer also handles packet reordering and duplication.
@@ -642,7 +642,7 @@
         </section>
         <section title="Flow control for receive-buffer management">
           <t>Flow control is necessary for receive-buffer management.
-            Therefore, a data flow layer protocol may implement the flow control
+            Therefore, a data flow layer protocol MAY implement the flow control
             mechanism.
             A receiver node advertises the available receive-buffer size in the
             data flow layer, like TCP's window size, when implementing the flow
@@ -653,16 +653,16 @@
         </section>
         <section title="Flow prioritization">
           <t>The prioritization of data flows multiplexed in a data path layer
-            protocol may be implemented on the data flow layer using the data
+            protocol MAY be implemented on the data flow layer using the data
             path layer information, such as monitored data path quality or
             congestion.
-            A data flow layer protocol may provide a service code point or
+            A data flow layer protocol MAY provide a service code point or
             priority so that nodes processing the data flow protocol
             discriminate a flow.
           </t>
         </section>
         <section title="Data flow and end-to-end security">
-          <t>A data flow layer protocol may implement
+          <t>A data flow layer protocol MAY implement
             a data flow or end-to-end security function.
             TLS and DTLS can be used for stream and datagram data flows,
             respectively.
@@ -673,7 +673,7 @@
           </t>
         </section>
         <section title="Inverse multiplexing for multipath protocols">
-          <t>A multipath data flow protocol may leverage multiple bidirectional
+          <t>A multipath data flow protocol MAY leverage multiple bidirectional
             data paths established by data path layer protocols.
             The data flow layer is responsible for the inverse multiplexing
             functionality.
@@ -724,7 +724,7 @@
           The data flow layer protocol performs flow control and inverse
           multiplexing into these data paths.
         </t>
-        <t>Multipath transport protocols may leverage in-band trajectory
+        <t>Multipath transport protocols MAY leverage in-band trajectory
           monitoring to detect a shared waypoint. 
           We assume that the data path routers manipulate the header of a data
           path layer protocol.
@@ -773,11 +773,11 @@
           The accelerator or the receiver reports the data path quality to the
           sender on the data path layer to perform congestion control.
           There are various ways to measure data path quality.
-          For example, data path routers may use the buffer capacity in the same
+          For example, data path routers MAY use the buffer capacity in the same
           way as ECN.
           If a data path router can detect packet losses for a
           connection of data path layer protocols, the packet losses or
-          statistics may be used to report the data path quality.
+          statistics MAY be used to report the data path quality.
           The data path quality report by the accelerator enables the fast
           response of congestion control algorithms.
           The data flow layer is responsible for retransmission for reliable
@@ -791,7 +791,7 @@
           is a novel distributed computing paradigm.
           It requires to be aware of the data path's waypoints
           because computing components are placed in between end-hosts.
-          The message-oriented protocol may adopt the pub/sub communication
+          The message-oriented protocol MAY adopt the pub/sub communication
           model, widely used in machine-to-machine communication.
         </t>
         <t>The data path layer establishes a data path
@@ -799,7 +799,7 @@
           The data flow layer over the data path implements a
           message-oriented protocol or a stream protocol to feed data into
           in-network computing nodes.
-          The message-oriented protocol may adopt the pub/sub communication
+          The message-oriented protocol MAY adopt the pub/sub communication
           model, widely used in machine-to-machine communication.
         </t>
         <figure align="center" anchor="layer-in-network-computing"
@@ -871,7 +871,7 @@
 +----+                           *----*     +----+
               ]]></artwork>
         </figure>
-        <t>Moreover, the data path layer may support data path quality
+        <t>Moreover, the data path layer MAY support data path quality
           monitoring for multiple data paths.
           If data path routers monitor multiple data paths' bandwidth capacity,
           they can report the estimated capacity to arbitrate multiple flows
@@ -884,10 +884,10 @@
           packet losses for these data paths.
           If the bandwidth utilization reaches the capacity, the data path
           router requests resource arbitration.
-          A flow may reduce the data rate using the flow control mechanism in
+          A flow MAY reduce the data rate using the flow control mechanism in
           the data flow layer if its priority is not high.
           Thus, these two flows can autonomously perform the flow arbitration.
-          This flow arbitration may fail and perform best-effort communication,
+          This flow arbitration MAY fail and perform best-effort communication,
           such in case both flows are the high priority
           and do not reduce the data rate.
         </t>
@@ -898,11 +898,11 @@
       <t>Although this document does not specify the data path layer and the
         data flow layer protocols, it discusses the implementation of these
         protocols' specifications. 
-        The data path layer may be implemented over UDP for interoperability
+        The data path layer MAY be implemented over UDP for interoperability
         with the current Internet operations
-        because other protocols than ICMP, TCP, and UDP may be filtered on
+        because other protocols than ICMP, TCP, and UDP MAY be filtered on
         the Internet.
-        Data path layer protocols must implement the
+        Data path layer protocols MUST implement the
         <xref target="RFC8899">maximum transmission unit (MTU) discovery</xref>.
       </t>
      <figure align="center" anchor="implementation"
@@ -925,7 +925,7 @@
         but is introduced for interoperability with existing middleboxes
         on the Internet.
       </t>
-      <t>A data path layer protocol may use hop-by-hop UDP connections to
+      <t>A data path layer protocol MAY use hop-by-hop UDP connections to
         designate waypoints like an overlay network.
         Otherwise, data path routers require to leverage routing technologies
         such as Segment Routing and policy-based routing to support waypoint
@@ -949,17 +949,17 @@
     <section anchor="Security" title="Security Considerations">
       <t>End-to-end encryption becomes critical to Internet protocols for
       privacy and security.
-      The data path layer must be visible to intermediate nodes, such as routers
+      The data path layer MUST be visible to intermediate nodes, such as routers
       and middleboxes, by design to process and manipulate a data path layer
       protocol.
       Therefore, this document proposes to implement transport layer security at
       the data flow layer.
       It exposes data path information.
-      Therefore, data path layer protocols must not include privacy-sensitive
+      Therefore, data path layer protocols MUST NOT include privacy-sensitive
       information in the protocol header.
       </t>
       <t>
-      Data path layer protocols may not be visible to intermediate nodes if an
+      Data path layer protocols may be invisible to intermediate nodes if an
       underlay protocol encrypts the payload.
       For example, <xref target="RFC6071">IPsec</xref> encrypts the payload of
       IP datagrams.
