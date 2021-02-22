@@ -245,9 +245,9 @@
         </t>
         <t>In summary, advanced computer networks require to treat data paths
           for QoS, middleboxes, and distributed computing.
-           Packet classification for data path treatment may use the header
-           information of transport layer protocols such as port numbers as well
-           as IP header fields.
+          Packet classification for data path treatment may use the header
+          information of transport layer protocols such as port numbers as well
+          as IP header fields.
         </t>
       </section>
 
@@ -985,24 +985,14 @@
       &RFC1112;
       &RFC1122;
       &RFC1123;
-      &RFC1301;
-      &RFC1458;
       &RFC2119;
       &RFC2474;
-      &RFC2768;
-      &RFC3022;
       &RFC3168;
-      &RFC3973;
       &RFC4340;
       &RFC4786;
       &RFC4960;
-      &RFC4654;
-      &RFC6071;
       &RFC6275;
       &RFC6347;
-      &RFC6559;
-      &RFC7094;
-      &RFC7413;
       &RFC7761;
       &RFC8402;
       &RFC8446;
@@ -1012,6 +1002,16 @@
       &RFC8899;
     </references>
     <references title="Informative References">
+      &RFC1301;
+      &RFC1458;
+      &RFC2768;
+      &RFC3022;
+      &RFC3973;
+      &RFC4654;
+      &RFC6071;
+      &RFC6559;
+      &RFC7094;
+      &RFC7413;
       &I-D.ietf-ippm-ioam-data;
       &I-D.kunze-coin-industrial-use-cases;
 
