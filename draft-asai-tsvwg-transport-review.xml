@@ -2,26 +2,35 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
 <!ENTITY RFC0768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml">
 <!ENTITY RFC0793 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0793.xml">
+<!ENTITY RFC0919 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0919.xml">
+<!ENTITY RFC1112 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1112.xml">
 <!ENTITY RFC1122 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1122.xml">
 <!ENTITY RFC1123 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1123.xml">
+<!ENTITY RFC1301 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1301.xml">
+<!ENTITY RFC1458 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1458.xml">
 <!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
 <!ENTITY RFC2474 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
 <!ENTITY RFC2768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2768.xml">
 <!ENTITY RFC3022 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3022.xml">
 <!ENTITY RFC3168 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml">
+<!ENTITY RFC3973 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3973.xml">
 <!ENTITY RFC4340 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4340.xml">
+<!ENTITY RFC4654 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4654.xml">
+<!ENTITY RFC4786 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4786.xml">
 <!ENTITY RFC4960 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml">
 <!ENTITY RFC6071 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml">
 <!ENTITY RFC6275 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6275.xml">
 <!ENTITY RFC6347 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6347.xml">
+<!ENTITY RFC6559 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6559.xml">
+<!ENTITY RFC7094 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7094.xml">
 <!ENTITY RFC7413 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7413.xml">
+<!ENTITY RFC7761 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7761.xml">
 <!ENTITY RFC8402 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8402.xml">
 <!ENTITY RFC8446 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
 <!ENTITY RFC8655 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8655.xml">
 <!ENTITY RFC8684 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8684.xml">
 <!ENTITY RFC8831 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8831.xml">
 <!ENTITY RFC8899 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8899.xml">
-<!ENTITY I-D.ietf-rtcweb-data-channel SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-rtcweb-data-channel.xml">
 <!ENTITY I-D.ietf-ippm-ioam-data SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-ippm-ioam-data.xml">
 <!ENTITY I-D.kunze-coin-industrial-use-cases SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.kunze-coin-industrial-use-cases.xml">
 ]>
@@ -38,14 +47,14 @@
 
 <!--ipr="noDerivativeWorks2026", full2026, trust200902-->
 <!-- trust200902, noDerivativeWorks2026 -->
-<rfc docName="draft-asai-tsvwg-transport-review-00" ipr="trust200902" category="std" consensus="yes">
+<rfc docName="draft-asai-tsvwg-transport-review-01" ipr="trust200902" category="std" consensus="yes">
 
   <front>
     <title abbrev="Data Path and Data Flow Layers">
       Separation of Data Path and Data Flow Sublayers in the Transport Layer
     </title>
     <author fullname="Hirochika Asai" initials="H." surname="Asai">
-      <organization abbrev="Preferred Networks">Preferred Networks, Inc.</organization>
+      <organization abbrev="Preferred Networks / WIDE Project">Preferred Networks, Inc. / WIDE Project</organization>
       <address>
         <postal>
 <!--<country>, <code>, <region>, <street>, <extaddr> for Japan-->
@@ -58,7 +67,7 @@
       </address>
     </author>
 
-    <date month="Nov" day="2" year="2020" />
+    <date month="Feb" day="22" year="2021" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -68,7 +77,7 @@
     <keyword>Data Flow Layer</keyword>
     <keyword>Congestion Control</keyword>
     <keyword>Reliability</keyword>
-    
+
     <abstract>
       <t>This document reviews the architectural design of the transport
       layer.
@@ -205,6 +214,7 @@
           These technologies require to be aware of data paths associated with
           data flows.
         </t>
+        <!-- data paths are controlled by routing protocols -->
         <t>The Internet layer has been extended to support QoS.
           <xref target="RFC2474">Differentiated Services, DiffServ</xref>,
           is one of the technologies to implement QoS.
@@ -226,7 +236,7 @@
           paths.
           If a middlebox is transparent to end-hosts, it should be installed at
           the network gateway or redirected by policy-based routing or segment
-          routing to activate the function. 
+          routing to activate the function.
           Otherwise, an end-host should specify the middlebox as a target
           end-host.
           In addition to these middleboxes, distributed computing technologies,
@@ -241,7 +251,8 @@
         </t>
       </section>
 
-      <section title="Resource Management: Flow Control and Congestion Control">
+      <section anchor="resource-management"
+          title="Resource Management: Flow Control and Congestion Control">
         <t>As the Internet layer does not provide resource management
           functionality, transport layer protocols may implement it, such as
           flow control and congestion control.
@@ -282,6 +293,82 @@
         </t>
       </section>
 
+      <section title="Communication Models and Transport Layer Protocols">
+        <t>This subsection summarizes four communication models
+          between end-hosts at the Internet layer;
+          unicast, <xref target="RFC7094">anycast</xref>,
+          <xref target="RFC0919">broadcast</xref>,
+          and <xref target="RFC1112">multicast</xref>,
+          and then discusses transport layer protocols
+          for these communication models.
+        </t>
+        <t>Unicast is the most fundamental communication model
+          that performs a data communication between two end-hosts.
+          Most transport layer protocols, such as
+          <xref target="RFC0768">UDP</xref>
+          and <xref target="RFC0793">TCP</xref>,
+          are designed for unicast.
+          Unicast may be unidirectional,
+          but some transport layer protocols only
+          support a bidirectional data communication.
+        </t>
+        <t>Anycast is a special communication model extended from unicast.
+          Therefore, the same transport layer protocols as unicast are often used.
+          Anycast performs a one-to-one data communication,
+          but a destination end-host is not uniquely identified by its IP address
+          because multiple end-hosts share an identical IP address.
+          Instead, a destination end-host is determined by IP routing in anycast.
+          Thus, anycast needs to take into account
+          data path changes for stateful connections
+          as the destination end-host may change by IP routing
+          during a long-lived transaction <xref target="RFC4786" />.
+        </t>
+        <t>
+          Broadcast and multicast are a communication model
+          that one end-host sends a packet to multiple end-hosts.
+          A difference between broadcast and multicast is
+          that multicast is to deliver a packet to multiple end-hosts
+          that join a specific multicast group
+          while broadcast delivers packets to all end-hosts
+          within a specified hop count.
+          In other words, multicast is referred to as a group data communication.
+          In multicast,
+          IGMP and Protocol Independent Multicast (PIM)
+          (e.g., <xref target="RFC3973">PIM-DM</xref>
+          and <xref target="RFC7761">PIM-SM</xref>)
+          are used to build data paths (i.e., multicast tree)
+          from a source end-host
+          to destination end-hosts for a group.
+          Therefore, data paths are controlled by the Internet layer.
+          Reliable transport protocols may be used
+          in the control plane <xref target="RFC6559" />.
+          Over the data paths, stateless and non-reliable transport layer protocols
+          such as UDP are usually used.
+          For TCP-friendly multicast,
+          <xref target="RFC4654" /> defines
+          a congestion control protocol for multicast.
+          To achieve reliable multicast,
+          <xref target="RFC1301">Multicast Transport Protocol (MTP)</xref>
+          defines a transport layer protocol
+          with flow control, QoS and error recovery for multicast.
+          However, it has been pointed out that MTP
+          has a potential scalability issue for flow handling
+          <xref target="RFC1458" />.
+        </t>
+        <t>In these four communication models,
+          IP routing provides end-to-end reachability and determines data paths.
+          Transport layer protocols are not basically aware of data paths,
+          although operational considerations exist in anycast
+          for uncertainty of data paths <xref target="RFC4786" />.
+          As pointed out in <xref target="RFC1458" />,
+          data flow management requires more resources compared to
+          data path functionality such as congestion control.
+          It implies that it is more significant in one-to-many communication
+          in multicast cases than unicast cases discussed
+          in <xref target="resource-management" />.
+        </t>
+      </section>
+
       <section title="Multipath Protocols">
         <t><xref target="RFC8684">Multipath TCP</xref> and SCTP utilize multiple
           data paths over multiple endpoint addresses.
@@ -314,18 +401,32 @@
         </t>
       </section>
 
-      <section title="Security">
+      <section anchor="security-review" title="Security">
         <t>The transport layer may implement an end-to-end security function,
-          such as 
+          such as
           <xref target="RFC8446">Transport Layer Security (TLS)</xref>
           <xref target="RFC6347">Datagram Transport Layer Security (DTLS)</xref>.
           As TLS does not encrypt the underlying transport protocol header,
           middleboxes such as TCP offloading can still work.
           However, some protocols implementing a transport layer protocol over
           DTLS, such as SCTP over DTLS used in
-          <xref target="I-D.ietf-rtcweb-data-channel">WebRTC Data Channel</xref>,
+          <xref target="RFC8831">WebRTC Data Channel</xref>,
           encrypt the transport layer header, and consequently, have difficulty
           cooperating with these middleboxes.
+        </t>
+        <t>In this way, transport layer's security functions
+          have focused on end-to-end security.
+          However, middleboxes that terminate security function,
+          such as <xref target="mcTLS">mcTLS</xref>,
+          have been proposed.
+          Moreover, distributed computing paradigms
+          such as in-network computing and MEC
+          may also introduce middleboxes allowed to terminate security functions
+          to deploy a computing function.
+          Therefore, security should be considered at three levels.
+          data path security, data flow security, and end-to-end security.
+          Note that data link security such as Wi-Fi Protected Access (WPA)
+          is out of the scope of this document.
         </t>
       </section>
 
@@ -340,6 +441,7 @@
           <t>Data path quality (congestion) monitoring and congestion control</t>
           <t>Data flow multiplexing</t>
           <t>Packet duplication</t>
+          <t>Data path security</t>
         </list>
         </t>
         <t>The following functionality is categorized as data flow functions.
@@ -347,7 +449,7 @@
           <t>Retransmission for reliable data communication</t>
           <t>Flow control for receive-buffer management</t>
           <t>Flow prioritization</t>
-          <t>End-to-end security</t>
+          <t>Data flow and end-to-end security</t>
           <t>Inverse multiplexing for multipath protocols</t>
         </list>
         </t>
@@ -468,7 +570,7 @@
           <t>The data path layer should implement congestion control.
             However, Data path layer protocols supporting only unidirectional
             paths may not implement congestion control because it cannot
-            implement congestion or data path quality reporting. 
+            implement congestion or data path quality reporting.
           </t>
           <t>Congestion control is performed based on data path quality or
             congestion reporting from the receiver end-host or intermediate
@@ -484,11 +586,27 @@
             characteristics (e.g., service level requirements) of transport
             layer protocols such as stream and datagram protocols. </t>
         </section>
-        <section title="Packet Duplication">
+        <section title="Packet duplication">
           <t>On a lossy data path, a data path layer protocol may implement
             packet duplication for improving reliability.
             However, the data path layer should not provide retransmission
             because it requires significant resources.
+          </t>
+        </section>
+        <section title="Data path security">
+          <t>A data path layer protocol may implement data path security.
+            Data path security provides a security function
+            between data path routers.
+            As pointed out in <xref target="security-review" />,
+            the data path layer assumes middleboxes
+            that terminate a security function.
+            Therefore, data (payload) encryption provided by data path security
+            may be terminated at a data path router.
+            In addition to encryption,
+            other security functions,
+            such as authentication, authorization, and accounting
+            for a data path router,
+            may be implemented as data path security.
           </t>
         </section>
       </section>
@@ -543,11 +661,15 @@
             discriminate a flow.
           </t>
         </section>
-        <section title="End-to-end security">
-          <t>A data flow layer protocol may implement the end-to-end security
-            function.
-            TLS and DTLS can be used for stream and datagram protocols,
+        <section title="Data flow and end-to-end security">
+          <t>A data flow layer protocol may implement
+            a data flow or end-to-end security function.
+            TLS and DTLS can be used for stream and datagram data flows,
             respectively.
+            In such case, data flow security is identical to end-to-end security.
+            If we consider a mechanism that terminates a security function
+            for a data flow, such as <xref target="mcTLS" />,
+            data flow security is handled by a middlebox.
           </t>
         </section>
         <section title="Inverse multiplexing for multipath protocols">
@@ -859,30 +981,61 @@
     <references title="Normative References">
       &RFC0768;
       &RFC0793;
+      &RFC0919;
+      &RFC1112;
       &RFC1122;
       &RFC1123;
+      &RFC1301;
+      &RFC1458;
       &RFC2119;
       &RFC2474;
       &RFC2768;
       &RFC3022;
       &RFC3168;
+      &RFC3973;
       &RFC4340;
+      &RFC4786;
       &RFC4960;
+      &RFC4654;
       &RFC6071;
       &RFC6275;
       &RFC6347;
+      &RFC6559;
+      &RFC7094;
       &RFC7413;
+      &RFC7761;
       &RFC8402;
       &RFC8446;
       &RFC8655;
       &RFC8684;
-      <!--&RFC8831;-->
+      &RFC8831;
       &RFC8899;
     </references>
     <references title="Informative References">
       &I-D.ietf-ippm-ioam-data;
-      &I-D.ietf-rtcweb-data-channel;
       &I-D.kunze-coin-industrial-use-cases;
+
+      <reference anchor="mcTLS">
+        <front>
+          <title>
+            Multi-Context TLS (mcTLS) Enabling Secure In-Network Functionality in TLS
+          </title>
+          <author initials="D." surname="Naylor" fullname="David Naylor" />
+          <author initials="K." surname="Schomp" fullname="Kyle Schomp" />
+          <author initials="M." surname="Varvello" fullname="Matteo Varvello" />
+          <author initials="I." surname="Leontiadis" fullname="Ilias Leontiadis" />
+          <author initials="J." surname="Blackburn" fullname="Jeremy Blackburn" />
+          <author initials="D." surname="L&oacute;pez" fullname="Diego R. L&oacute;pez" />
+          <author initials="K." surname="Papagiannaki" fullname="Konstantina Papagiannaki" />
+          <author initials="P." surname="Rodriguez" fullname="Pablo Rodriguez Rodriguez" />
+          <author initials="P." surname="Steenkiste" fullname="Peter Steenkiste" />
+          <date year="2015" />
+        </front>
+        <seriesInfo name="" value="SIGCOMM Comput. Commun. Rev." />
+        <seriesInfo name="vol." value="45" />
+        <seriesInfo name="no." value="4" />
+        <seriesInfo name="pp." value="199-212" />
+      </reference>
     </references>
 
   </back>
