@@ -18,6 +18,7 @@
 <!ENTITY RFC4654 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4654.xml">
 <!ENTITY RFC4786 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4786.xml">
 <!ENTITY RFC4960 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml">
+<!ENTITY RFC5216 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5216.xml">
 <!ENTITY RFC6071 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml">
 <!ENTITY RFC6275 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6275.xml">
 <!ENTITY RFC6347 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6347.xml">
@@ -31,6 +32,7 @@
 <!ENTITY RFC8684 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8684.xml">
 <!ENTITY RFC8831 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8831.xml">
 <!ENTITY RFC8899 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8899.xml">
+<!ENTITY RFC9065 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9065.xml">
 <!ENTITY I-D.ietf-ippm-ioam-data SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-ippm-ioam-data.xml">
 <!ENTITY I-D.kunze-coin-industrial-use-cases SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.kunze-coin-industrial-use-cases.xml">
 ]>
@@ -47,7 +49,7 @@
 
 <!--ipr="noDerivativeWorks2026", full2026, trust200902-->
 <!-- trust200902, noDerivativeWorks2026 -->
-<rfc docName="draft-asai-tsvwg-transport-review-01" ipr="trust200902" category="std" consensus="yes">
+<rfc docName="draft-asai-tsvwg-transport-review-02" ipr="trust200902" category="info" consensus="yes">
 
   <front>
     <title abbrev="Data Path and Data Flow Layers">
@@ -67,7 +69,7 @@
       </address>
     </author>
 
-    <date month="Feb" day="22" year="2021" />
+    <date month="Aug" day="26" year="2021" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -81,11 +83,12 @@
     <abstract>
       <t>This document reviews the architectural design of the transport
       layer.
-      In particular, this document separates the transport layer into two
-      sublayers; the data path and the data flow layers.
+      In particular, this document proposes to separate the transport layer into
+      two sublayers; the data path and the data flow layers.
       The data path layer provides functionality on the data path, such as
       connection handling, path quality and trajectory monitoring,
-      waypoint management, and congestion control.
+      waypoint management, and congestion control for the data path resource
+      management.
       The data flow layer provides additional functionality upon the data path
       layer, such as flow control for the receive buffer management,
       retransmission for reliable data delivery, and transport layer security.
@@ -404,7 +407,7 @@
       <section anchor="security-review" title="Security">
         <t>The transport layer may implement an end-to-end security function,
           such as
-          <xref target="RFC8446">Transport Layer Security (TLS)</xref>
+          <xref target="RFC8446">Transport Layer Security (TLS)</xref> and
           <xref target="RFC6347">Datagram Transport Layer Security (DTLS)</xref>.
           As TLS does not encrypt the underlying transport protocol header,
           middleboxes such as TCP offloading can still work.
@@ -412,7 +415,11 @@
           DTLS, such as SCTP over DTLS used in
           <xref target="RFC8831">WebRTC Data Channel</xref>,
           encrypt the transport layer header, and consequently, have difficulty
-          cooperating with these middleboxes.
+          cooperating with these middleboxes,
+          as addressed in <xref target="RFC9065">RFC 9065</xref>.
+          <xref target="RFC9065">RFC 9065</xref> suggests to add OAM
+          information to network layer headers, while this document proposes
+          such information to data path layer headers.
         </t>
         <t>In this way, transport layer's security functions
           have focused on end-to-end security.
@@ -428,6 +435,18 @@
           Note that data link security such as Wi-Fi Protected Access (WPA)
           is out of the scope of this document.
         </t>
+        <section title="Encryption">
+          <t>.</t>
+        </section>
+        <section title="Authentication">
+          <t>Authentication is one of the key security functions provided by
+            TLS.
+            Extensible Authentication Protocol (EAP) TLS (EAP-TLS)
+            provides authentication, authorization, and accounting (AAA)
+            as defined in
+            <xref target="RFC5216">RFC 5216</xref>.
+          </t>
+        </section>
       </section>
 
       <section anchor="data-path-flow-summary" title="Summary">
@@ -991,6 +1010,7 @@
       &RFC4340;
       &RFC4786;
       &RFC4960;
+      &RFC5216;
       &RFC6275;
       &RFC6347;
       &RFC7761;
@@ -1012,6 +1032,7 @@
       &RFC6559;
       &RFC7094;
       &RFC7413;
+      &RFC9065;
       &I-D.ietf-ippm-ioam-data;
       &I-D.kunze-coin-industrial-use-cases;
 
