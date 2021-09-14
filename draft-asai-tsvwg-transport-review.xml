@@ -32,6 +32,7 @@
 <!ENTITY RFC8684 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8684.xml">
 <!ENTITY RFC8831 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8831.xml">
 <!ENTITY RFC8899 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8899.xml">
+<!ENTITY RFC9000 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml">
 <!ENTITY RFC9065 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9065.xml">
 <!ENTITY I-D.ietf-ippm-ioam-data SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-ippm-ioam-data.xml">
 <!ENTITY I-D.kunze-coin-industrial-use-cases SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.kunze-coin-industrial-use-cases.xml">
@@ -413,38 +414,29 @@
           middleboxes such as TCP offloading can still work.
           However, some protocols implementing a transport layer protocol over
           DTLS, such as SCTP over DTLS used in
-          <xref target="RFC8831">WebRTC Data Channel</xref>,
-          encrypt the transport layer header, and consequently, have difficulty
-          cooperating with these middleboxes,
-          as addressed in <xref target="RFC9065">RFC 9065</xref>.
+          <xref target="RFC8831">WebRTC Data Channel</xref> and
+          <xref target="RFC9000">QUIC</xref>, encrypt the transport layer
+          header, and consequently, have difficulty cooperating with these
+          middleboxes, as addressed in <xref target="RFC9065">RFC 9065</xref>.
           <xref target="RFC9065">RFC 9065</xref> suggests to add OAM
           information to network layer headers, while this document proposes
           such information to data path layer headers.
         </t>
-        <t>In this way, transport layer's security functions
-          have focused on end-to-end security.
-          However, middleboxes that terminate security function,
-          such as <xref target="mcTLS">mcTLS</xref>,
-          have been proposed.
-          Moreover, distributed computing paradigms
-          such as in-network computing and MEC
-          may also introduce middleboxes allowed to terminate security functions
-          to deploy a computing function.
+        <t>In this way, transport layer's security functions have focused on
+          end-to-end security.
+          However, middleboxes that terminate a security function, such as
+          <xref target="mcTLS">mcTLS</xref>, have been proposed.
+          Moreover, distributed computing paradigms such as MEC may also
+          introduce middleboxes allowed to terminate security functions to
+          deploy a computing function.
           Therefore, security should be considered at three levels.
           data path security, data flow security, and end-to-end security.
           Note that data link security such as Wi-Fi Protected Access (WPA)
-          is out of the scope of this document.
+          is out of the scope of this document, although data path layer
+          security may adopt data link security for hop-by-hop security.
         </t>
-        <section title="Encryption">
-          <t>.</t>
-        </section>
         <section title="Authentication">
-          <t>Authentication is one of the key security functions provided by
-            TLS.
-            Extensible Authentication Protocol (EAP) TLS (EAP-TLS)
-            provides authentication, authorization, and accounting (AAA)
-            as defined in
-            <xref target="RFC5216">RFC 5216</xref>.
+          <t>.
           </t>
         </section>
       </section>
@@ -626,6 +618,8 @@
             such as authentication, authorization, and accounting
             for a data path router,
             MAY be implemented as data path security.
+            Data path layer MAY implement mutual authentication mechanisms,
+            such as <xref target="RFC5216">EAP-TLS</xref>.
           </t>
         </section>
       </section>
@@ -1020,6 +1014,7 @@
       &RFC8684;
       &RFC8831;
       &RFC8899;
+      &RFC9000;
     </references>
     <references title="Informative References">
       &RFC1301;
