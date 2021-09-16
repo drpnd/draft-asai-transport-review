@@ -70,7 +70,7 @@
       </address>
     </author>
 
-    <date month="Aug" day="26" year="2021" />
+    <date month="Sep" day="16" year="2021" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -435,10 +435,6 @@
           is out of the scope of this document, although data path layer
           security may adopt data link security for hop-by-hop security.
         </t>
-        <section title="Authentication">
-          <t>.
-          </t>
-        </section>
       </section>
 
       <section anchor="data-path-flow-summary" title="Summary">
