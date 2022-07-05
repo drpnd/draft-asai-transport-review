@@ -50,7 +50,7 @@
 
 <!--ipr="noDerivativeWorks2026", full2026, trust200902-->
 <!-- trust200902, noDerivativeWorks2026 -->
-<rfc docName="draft-asai-tsvwg-transport-review-02" ipr="trust200902" category="info" consensus="yes">
+<rfc docName="draft-asai-tsvwg-transport-review-03" ipr="trust200902" category="info" consensus="yes">
 
   <front>
     <title abbrev="Data Path and Data Flow Layers">
@@ -70,7 +70,7 @@
       </address>
     </author>
 
-    <date month="Sep" day="16" year="2021" />
+    <date month="July" day="6" year="2022" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -103,27 +103,51 @@
 
   <middle>
     <section title="Introduction">
-      <t>This document specifies two sublayers of the transport layer; the data
-      path and the data flow layers.
-      In this document, the transport layer's data path functionality, such as
-      bidirectional connection handling, waypoint management,
-      and congestion control, is separated
-      from the data flow functionality, such as flow control for the receive
-      buffer management, retransmission for reliable data delivery, and
-      transport layer security.
-      This document reviews the transport layer's functionality from the
-      viewpoint of data paths and data flows in
+      <t>Various transport layer protocols have been developed to satisfy
+      diversified requirements of applications over heterogeneous networks.
+      For example,
+      <xref target="RFC0793">Transmission Control Protocol (TCP)</xref>,
+      one of the most commonly used transport layer protocols on the Internet,
+      implements flow control and retransmission mechanisms for reliable
+      communication.
+      <!--between end-hosts with limited memory resources over lossy networks.-->
+      TCP also implements a congestion control mechanism to efficiently and
+      effectively utilize shared network bandwidth resources.
+      Multipath protocols, such as <xref target="RFC8684">multipath TCP</xref>,
+      have been developed to utilize multiple data paths between end-hosts for
+      better throughput.
+      Below the transport layer,
+      <xref target="RFC3168">Explicit Congestion Notification (ECN)</xref>
+      has been added to the Internet protocol to assist congestion control of
+      transport layer protocols.
+      Basically, rich functionality between end-hosts are implemented on the
+      transport layer according to the end-to-end principle.
+      As a result, transport layer protocols have become complex as they need to
+      implement many functionality, and thus, it sacrifices the
+      middlebox-friendliness and the extensibility of transport layer protocols.
+      </t>
+      <t>This document aims to clarify the transport layer's functionality
+      and specifies two sublayers of the transport layer, the data path and the
+      data flow layers, for better extensibility of transport layer protocols.
+      Hence, this document does not intend to obsolete the transport layer or
+      violate the current Internet architecture.
+      In this document, the data path functionality of the transport layer, such
+      as bidirectional connection handling, waypoint management, and congestion
+      control, is separated from the data flow functionality, such as flow
+      control for the receive buffer management, retransmission for reliable
+      data delivery, and transport layer security.
+      </t>
+      <t>This document first reviews the transport layer's functionality from
+      the viewpoint of data paths and data flows in
       <xref target="architecture-review" />.
       It then specifies the data path layer and the data flow layer in
       <xref target="specification" />.
       The data path and data flow layers provide the data path and the data flow
       functionality, respectively.
-      </t>
-      <t>This document reviews the transport layer to clarify the transport
-      layer's functionality and to invent data flow layer protocols for advanced
-      Internet technologies, such as middleboxes and in-network computing.
-      Hence, this document does not intend to obsolete the transport layer or
-      violate the current Internet architecture.
+      The separation of the transport layer into these two sublayers enalbes us
+      to invent data path and data flow layer protocols for advanced Internet
+      technologies, such as multi-access edge computing (MEC) and in-network
+      computing, as discussed in <xref target="use-case" />.
       </t>
     <!--</section>
     <section title="Terminology">-->
@@ -144,7 +168,7 @@
         data paths and data flows.
       </t>
 
-      <section title="Conventional Layering">
+      <section title="Conventional Communication Layer Model">
         <t><xref target="RFC1122">RFC 1122</xref> defines three communication
           layers, link layer, Internet layer, transport layer, and the
           interfaces between these layers.
@@ -182,9 +206,8 @@
         </figure>
         <t>The transport layer provides various functions over the IP.
           <xref target="RFC0768">User Datagram Protocol (UDP)</xref> 
-          and <xref target="RFC0793">Transmission Control Protocol (TCP)</xref>
-          are the most commonly used transport layer protocols.
-          UDP is a connectionless transport protocol with a minimum header.
+          and TCP are the most commonly used transport layer protocols.
+          UDP is a connectionless transport layer protocol with a minimum header.
           TCP implements flow control according to the receiver's buffer capacity,
           retransmission for reliable communication, congestion control by a
           packet delivery status such as packet loss and delay.
@@ -213,8 +236,11 @@
           This end-to-end principle of the Internet has achieved a scalable
           architecture.
           However, computer networks' advancement introduced QoS and middleboxes
-          to achieve high-quality data communication and optimize communication
-          over distributed and heterogeneous computer networks.
+          (e.g., transparent proxies,
+          <xref target="RFC3022">Network Address Translation (NAT)</xref>,
+          firewalls)
+          to achieve high-quality data communication and optimize data
+          communication over distributed and heterogeneous computer networks.
           These technologies require to be aware of data paths associated with
           data flows.
         </t>
@@ -225,33 +251,47 @@
           It enables autonomous and scalable service discrimination using an IP
           header field, differentiated services codepoint (DSCP), to implement
           QoS for a data path.
+          Network operators may configure policy-based routing based on DSCP
+          values to be aware of data paths.
+          As another technology to treat QoS,
           <xref target="RFC8402">Segment Routing</xref> enables data path
           configuration for individual flows by leveraging the source routing
           paradigm.
-          Thus, Segment Routing is another technology to treat QoS.
+          Thus, it is essential to be aware of data paths to properly apply QoS
+          to data communication traffic.
+          <!--ECN is another extension to the Internet layer to inform the
+          congestion status to transport layer protocols for end-to-end
+          congestion control.-->
+          <!--These extensions are not aware of data paths, and thus,
+          path changes or equal cost multipath (ECMP) routing.-->
         </t>
         <t>Middleboxes are more complex than QoS.
           They add various functions such as firewalls, TCP offloading,
           transcoding, and content caches to a data path.
           These functions require to be aware of waypoints to be activated.
-          Routing technologies with packet classification using the IP and the
-          transport protocol headers have collectively been leveraged to route
-          traffic through the middleboxes as the IP layer is not aware of data
-          paths.
+          Moreover, they are possibly stateful, and thus, require to
+          consistently use the same waypoint for a single data flow.
+          Policy-based routing technologies with packet classification using the
+          IP and the transport layer protocol headers have collectively been
+          leveraged to route traffic through the middleboxes as the IP layer is
+          not aware of data paths.
           If a middlebox is transparent to end-hosts, it should be installed at
-          the network gateway or redirected by policy-based routing or segment
-          routing to activate the function.
+          the network gateway or redirected by policy-based routing to activate
+          the function.
           Otherwise, an end-host should specify the middlebox as a target
           end-host.
           In addition to these middleboxes, distributed computing technologies,
-          such as in-network computing and multi-access edge computing (MEC),
-          also require to be aware of data paths.
+          such as MEC and in-network computing, also require to be aware of data
+          paths.
+          Note that overlay networks or application layer service discovery
+          mechanisms may be used to achieve data path-ware networking for these
+          distributed computing technologies.
         </t>
         <t>In summary, advanced computer networks require to treat data paths
           for QoS, middleboxes, and distributed computing.
-          Packet classification for data path treatment may use the header
-          information of transport layer protocols such as port numbers as well
-          as IP header fields.
+          In policy-based routing, packet classification for data path treatment
+          may use the header information of transport layer protocols such as
+          port numbers as well as IP header fields.
         </t>
       </section>
 
@@ -262,7 +302,7 @@
           flow control and congestion control.
           Both flow control and congestion control mechanisms control packet
           transmission for resource management.
-          However, the target resource is different.
+          However, the target resources are different.
           They control packet transmission according to the receiver's buffer
           capacity and the network bandwidth capacity, respectively.
         </t>
@@ -272,12 +312,11 @@
           On the other hand, congestion control is performed based on data
           communication quality information, such as packet loss and delay.
           The underlying Internet layer may provide congestion information by
-          the
-          <xref target="RFC3168">Explicit Congestion Notification (ECN)</xref>.
+          ECN.
           In this manner, transport layer protocols control congestion depending
           on the data path's network resources.
           Therefore, congestion control is associated with a data path, while
-          flow control is associated with the end-hosts.
+          flow control is associated with end-hosts.
         </t>
         <t>As discussed above, congestion control should be performed on the
           associated data path.
@@ -344,7 +383,7 @@
           from a source end-host
           to destination end-hosts for a group.
           Therefore, data paths are controlled by the Internet layer.
-          Reliable transport protocols may be used
+          Reliable transport layer protocols may be used
           in the control plane <xref target="RFC6559" />.
           Over the data paths, stateless and non-reliable transport layer protocols
           such as UDP are usually used.
@@ -410,7 +449,7 @@
           such as
           <xref target="RFC8446">Transport Layer Security (TLS)</xref> and
           <xref target="RFC6347">Datagram Transport Layer Security (DTLS)</xref>.
-          As TLS does not encrypt the underlying transport protocol header,
+          As TLS does not encrypt the underlying transport layer protocol header,
           middleboxes such as TCP offloading can still work.
           However, some protocols implementing a transport layer protocol over
           DTLS, such as SCTP over DTLS used in
@@ -435,6 +474,10 @@
           is out of the scope of this document, although data path layer
           security may adopt data link security for hop-by-hop security.
         </t>
+        <section title="Authentication">
+          <t>.
+          </t>
+        </section>
       </section>
 
       <section anchor="data-path-flow-summary" title="Summary">
@@ -634,8 +677,8 @@
           for reliable data communication, a flow control mechanism for
           receive-buffer management, flow prioritization for effective network
           resource utilization, a security extension such as TLS and DTLS,
-          and a multipath transport protocol using multiple bidirectional paths
-          over the data path layer.
+          and a multipath transport layer protocol using multiple bidirectional
+          paths over the data path layer.
         </t>
         <section title="Retransmission for reliable data communication">
           <t>A data flow layer protocol MAY provide retransmission for reliable
@@ -695,7 +738,7 @@
       </section>
     </section>
 
-    <section title="Use Cases">
+    <section anchor="use-case" title="Use Cases">
       <t>This document does not specify any data path protocols or data flow
         protocols, but the data path and data flow layers' architectural design.
         For better understanding, this section describes the use cases of the
@@ -704,7 +747,7 @@
         node (DFN) denote a router that processes a data path layer protocol
         and a node that processes a data flow layer protocol, respectively.
       </t>
-      <section title="Multipath Transport Protocols">
+      <section title="Multipath Transport Layer Protocols">
         <figure align="center" anchor="example-multipath"
             title="An example of multipath data communication">
           <preamble>Hosts A and B communicate with each other
@@ -733,7 +776,7 @@
           The data flow layer protocol performs flow control and inverse
           multiplexing into these data paths.
         </t>
-        <t>Multipath transport protocols MAY leverage in-band trajectory
+        <t>Multipath transport layer protocols MAY leverage in-band trajectory
           monitoring to detect a shared waypoint. 
           We assume that the data path routers manipulate the header of a data
           path layer protocol.
@@ -793,6 +836,9 @@
           communication and flow control for receive-buffer management.
         </t>
 
+      </section>
+      <section title="Multi-access Edge Computing">
+        <t>Anycast or DNS-based service discovery.</t>
       </section>
       <section title="In-Network Computing">
         <t>In-network computing
