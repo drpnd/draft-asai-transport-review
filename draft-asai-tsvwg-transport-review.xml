@@ -12,19 +12,23 @@
 <!ENTITY RFC2474 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
 <!ENTITY RFC2768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2768.xml">
 <!ENTITY RFC3022 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3022.xml">
+<!ENTITY RFC3048 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3048.xml">
 <!ENTITY RFC3168 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml">
+<!ENTITY RFC3208 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3208.xml">
 <!ENTITY RFC3973 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3973.xml">
 <!ENTITY RFC4340 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4340.xml">
 <!ENTITY RFC4654 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4654.xml">
 <!ENTITY RFC4786 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4786.xml">
 <!ENTITY RFC4960 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml">
 <!ENTITY RFC5216 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5216.xml">
+<!ENTITY RFC5944 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5944.xml">
 <!ENTITY RFC6071 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml">
 <!ENTITY RFC6275 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6275.xml">
 <!ENTITY RFC6347 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6347.xml">
 <!ENTITY RFC6559 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6559.xml">
 <!ENTITY RFC7094 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7094.xml">
 <!ENTITY RFC7413 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7413.xml">
+<!ENTITY RFC7629 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7629.xml">
 <!ENTITY RFC7761 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7761.xml">
 <!ENTITY RFC8402 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8402.xml">
 <!ENTITY RFC8446 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
@@ -32,10 +36,11 @@
 <!ENTITY RFC8684 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8684.xml">
 <!ENTITY RFC8831 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8831.xml">
 <!ENTITY RFC8899 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8899.xml">
+<!ENTITY RFC8938 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8938.xml">
 <!ENTITY RFC9000 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml">
 <!ENTITY RFC9065 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9065.xml">
-<!ENTITY I-D.ietf-ippm-ioam-data SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.ietf-ippm-ioam-data.xml">
-<!ENTITY I-D.kunze-coin-industrial-use-cases SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.kunze-coin-industrial-use-cases.xml">
+<!ENTITY RFC9197 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9197.xml">
+<!ENTITY I-D.irtf-coinrg-use-cases SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.draft-irtf-coinrg-use-cases.xml">
 ]>
 
 <?rfc strict="no" ?>
@@ -70,7 +75,7 @@
       </address>
     </author>
 
-    <date month="July" day="6" year="2022" />
+    <date month="July" day="7" year="2022" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -334,6 +339,12 @@
           Thus, flow prioritization cannot be implemented at the transport
           layer, although a QoS technology such as DiffServ may be leveraged.
         </t>
+        <t>In summary, congestion control should be performed on a data path
+          as it controls network resources, while flow control should be
+          performed per flow as it is associated with the resources of
+          end-hosts, from the viewpoint of resource management in the transport
+          layer.
+        </t>
       </section>
 
       <section title="Communication Models and Transport Layer Protocols">
@@ -347,10 +358,7 @@
         </t>
         <t>Unicast is the most fundamental communication model
           that performs a data communication between two end-hosts.
-          Most transport layer protocols, such as
-          <xref target="RFC0768">UDP</xref>
-          and <xref target="RFC0793">TCP</xref>,
-          are designed for unicast.
+          Most transport layer protocols such as TCP are designed for unicast.
           Unicast may be unidirectional,
           but some transport layer protocols only
           support a bidirectional data communication.
@@ -373,7 +381,7 @@
           that multicast is to deliver a packet to multiple end-hosts
           that join a specific multicast group
           while broadcast delivers packets to all end-hosts
-          within a specified hop count.
+          within a specified broadcast domain (limited by the hop count).
           In other words, multicast is referred to as a group data communication.
           In multicast,
           IGMP and Protocol Independent Multicast (PIM)
@@ -404,11 +412,32 @@
           although operational considerations exist in anycast
           for uncertainty of data paths <xref target="RFC4786" />.
           As pointed out in <xref target="RFC1458" />,
-          data flow management requires more resources compared to
-          data path functionality such as congestion control.
-          It implies that it is more significant in one-to-many communication
-          in multicast cases than unicast cases discussed
-          in <xref target="resource-management" />.
+          data flow management requires more resources to manage the states
+          compared to data path functionality such as congestion control.
+          It implies that the resource management for data flows is more
+          significant in one-to-many communication of multicast cases than
+          unicast cases discussed in <xref target="resource-management" />.
+        </t>
+        <t>From the viewpoint of the communication models,
+          anycast and multicast rely on data paths controlled by IP routing.
+          Particularly in multicast, routers manage multicast tree information
+          (i.e., data path states), and may assist congestion control of
+          transport protocols <xref target="RFC3048" />.
+          Furthermore, routers may implement a retransmission
+          mechanism, such as
+          <xref target="RFC3208">PGM Reliable Transport Protocol</xref>,
+          upon a data path.
+          Such a mechanism requires routers to manage flow states of the
+          transport layer.
+          It is similar to the mechanism of TCP's congestion control
+          acceleration middleboxes in unicast or anycast.
+          Although these mechanisms are implemented in routers or middleboxes,
+          they are obviously the functionality of the transport layer.
+          <!--
+          Note that broadcast is unaware of data paths and unidirectional as it
+          is controlled by a broadcast domain, which is generally limited by the
+          hop count.
+          -->
         </t>
       </section>
 
@@ -419,11 +448,18 @@
           distinguish the data paths by endpoint IP addresses.
           Accordingly, multiple flows of these protocols may use an identical
           data path without recognizing it.
+          Thus, multipath protocols of the transport layer implement a mechanism
+          to handle multiple data paths in terms of endpoint IP addresses,
+          although it is not sufficient for the data path management.
         </t>
         <t>Multipath protocols are also responsible for inverse multiplexing to
           split a data stream into multiple data paths.
-          This inverse multiplexing is independent of data paths except for
-          congestion control.
+          This inverse multiplexing is collectively performed with flow control
+          and retransmission.
+          It is independent of data paths except for congestion control as
+          the inverse multiplexing as well as flow control and retransmission
+          do not need to be aware of data paths but congestion control is
+          performed on each data path.
         </t>
       </section>
 
@@ -435,12 +471,16 @@
           should be implemented over data paths.
           Instead, ``smart'' end-hosts or middleboxes may implement it.
         </t>
-        <t>An end-host may transmit a duplicate packet for improving
+        <t>An end-host may transmit a duplicate (replicate) packet for improving
           reliability <xref target="RFC8655" />.
           This functionality is also independent of data paths.
           However, a router in a data path may be capable of duplicating a
           packet because the duplication process does not require significant
           computing resources, unlike retransmission.
+          This duplication (replication) functionality may be implemented in
+          other layers than the transport layer, such as the link layer and the
+          Internet layer, as the
+          <xref target="RFC8938">DetNet data plane</xref> does.
         </t>
       </section>
 
@@ -474,10 +514,10 @@
           is out of the scope of this document, although data path layer
           security may adopt data link security for hop-by-hop security.
         </t>
-        <section title="Authentication">
+        <!--<section title="Authentication">
           <t>.
           </t>
-        </section>
+        </section>-->
       </section>
 
       <section anchor="data-path-flow-summary" title="Summary">
@@ -558,7 +598,7 @@
           <t>One approach to implement this functionality is prepending,
             appending, or XOR-ing device identifiers like in-band network
             telemetry or
-            <xref target="I-D.ietf-ippm-ioam-data">in-situ OAM</xref>
+            <xref target="RFC9197">in-situ OAM</xref>
             by data path layer protocol's routers.
             <xref target="appending" /> shows an example of in-band trajectory
             monitoring.
@@ -598,6 +638,14 @@
             Other alternative approaches MAY be used in a data path layer
             protocol.
           </t>
+          <t>Note that this waypoint management functionality could be
+            considered as the Internet layer's functionality
+            like policy-based routing, source routing, and segment routing.
+            This document considers the waypoint management is the functionality
+            of the data path layer.
+            The data path layer interacts with the Internet layer to function
+            the waypoint management.
+            </t>
         </section>
         <section title="Bidirectional connection establishment">
           <t>The data path layer SHOULD support both unidirectional and
@@ -718,7 +766,8 @@
             a data flow or end-to-end security function.
             TLS and DTLS can be used for stream and datagram data flows,
             respectively.
-            In such case, data flow security is identical to end-to-end security.
+            In such cases, data flow security is identical to end-to-end
+            security.
             If we consider a mechanism that terminates a security function
             for a data flow, such as <xref target="mcTLS" />,
             data flow security is handled by a middlebox.
@@ -791,7 +840,7 @@
       </section>
       <section title="Congestion Control Acceleration">
         <t>Some TCP congestion control acceleration functions proxy TCP sessions
-          to shorten the perspective latency.
+          to shorten the apparent latency.
           The acceleration functions acknowledge receipt of packets.
           Using a loss-based congestion control algorithm, both congestion
           control and flow control use the acknowledgments (ACKs).
@@ -832,17 +881,46 @@
           statistics MAY be used to report the data path quality.
           The data path quality report by the accelerator enables the fast
           response of congestion control algorithms.
-          The data flow layer is responsible for retransmission for reliable
+        </t>
+        <t>The data flow layer is responsible for retransmission for reliable
           communication and flow control for receive-buffer management.
+          The accelerator MAY implement a data flow layer protocol as well as
+          the data path layer protocol to proxy data flows for these functions.
         </t>
 
       </section>
       <section title="Multi-access Edge Computing">
-        <t>Anycast or DNS-based service discovery.</t>
+        <t>Multi-access Edge Computing (MEC) enables application service
+          providers to deploy computing resources into an access network
+          edge, where is closer to end-hosts (subscribers, users or clients) than data
+          centers.
+          As a MEC node is also an end-host, it can use any transport layer
+          protocols.
+        </t>
+        <t>A challenge of a transport protocol for MEC is that MEC needs to
+          take into account the proximity for low latency and efficient resource
+          utilization.
+          Therefore, it requires to be aware of data paths and their QoS.
+          In-band trajectory monitoring and waypoint management of the data
+          path layer enable this proximity-aware data transport.
+          Moreover, an end-host that uses MEC may be mobile and move to other
+          networks.
+          <xref target="RFC5944">Mobile IP</xref> MAY be used, but 
+          <!--<xref target="RFC7629">Flow-Binding Support for Mobile IP</xref>.
+          Anycast or DNS-based service discovery.-->
+        </t>
+        <t>Furthermore, a MEC node could be used as a middlebox, such as
+          data buffer for streaming communication, transcoding, data filtering,
+          and a broker for pub/sub communication, that collectively
+          works with high-performance computing resources in data centers.
+          In such cases, data flows 
+          Building an overlay network is one of the solutions for MEC.
+          in <xref target="in-network-computing" />.
+        </t>
       </section>
-      <section title="In-Network Computing">
+      <section anchor="in-network-computing" title="In-Network Computing">
         <t>In-network computing
-          <xref target="I-D.kunze-coin-industrial-use-cases" />
+          <xref target="I-D.irtf-coinrg-use-cases" />
           is a novel distributed computing paradigm.
           It requires to be aware of the data path's waypoints
           because computing components are placed in between end-hosts.
@@ -1047,6 +1125,7 @@
       &RFC4786;
       &RFC4960;
       &RFC5216;
+      &RFC5944;
       &RFC6275;
       &RFC6347;
       &RFC7761;
@@ -1057,21 +1136,25 @@
       &RFC8831;
       &RFC8899;
       &RFC9000;
+      &RFC9197;
     </references>
     <references title="Informative References">
       &RFC1301;
       &RFC1458;
       &RFC2768;
       &RFC3022;
+      &RFC3048;
+      &RFC3208;
       &RFC3973;
       &RFC4654;
       &RFC6071;
       &RFC6559;
       &RFC7094;
       &RFC7413;
+      &RFC7629;
+      &RFC8938;
       &RFC9065;
-      &I-D.ietf-ippm-ioam-data;
-      &I-D.kunze-coin-industrial-use-cases;
+      &I-D.irtf-coinrg-use-cases;
 
       <reference anchor="mcTLS">
         <front>
