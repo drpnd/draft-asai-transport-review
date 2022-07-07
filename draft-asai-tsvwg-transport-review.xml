@@ -28,7 +28,6 @@
 <!ENTITY RFC6559 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6559.xml">
 <!ENTITY RFC7094 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7094.xml">
 <!ENTITY RFC7413 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7413.xml">
-<!ENTITY RFC7629 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7629.xml">
 <!ENTITY RFC7761 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7761.xml">
 <!ENTITY RFC8402 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8402.xml">
 <!ENTITY RFC8446 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
@@ -897,15 +896,17 @@
           As a MEC node is also an end-host, it can use any transport layer
           protocols.
         </t>
-        <t>A challenge of a transport protocol for MEC is that MEC needs to
-          take into account the proximity for low latency and efficient resource
-          utilization.
+        <t>A challenge of a transport layer protocol for MEC is that MEC needs
+          to take into account the proximity for low latency and efficient
+          resource utilization.
           Therefore, it requires to be aware of data paths and their QoS.
           In-band trajectory monitoring and waypoint management of the data
           path layer enable this proximity-aware data transport.
           Moreover, an end-host that uses MEC may be mobile and move to other
           networks.
-          <xref target="RFC5944">Mobile IP</xref> MAY be used, but 
+          The data path layer MAY implement mobility support, by enhancing the
+          existing mobility support mechansims such as
+          <xref target="RFC5944">Mobile IP</xref>.
           <!--<xref target="RFC7629">Flow-Binding Support for Mobile IP</xref>.
           Anycast or DNS-based service discovery.-->
         </t>
@@ -913,9 +914,12 @@
           data buffer for streaming communication, transcoding, data filtering,
           and a broker for pub/sub communication, that collectively
           works with high-performance computing resources in data centers.
-          In such cases, data flows 
-          Building an overlay network is one of the solutions for MEC.
-          in <xref target="in-network-computing" />.
+          In such cases, data flows are terminated by a MEC node.
+          In the conventional techniques, building an overlay network is one of
+          the solutions for these cases to terminate and proxy data flows.
+          The data flow layer MAY abstract and implement part of functionality
+          of overlay networks,
+          as discussed in <xref target="in-network-computing" />.
         </t>
       </section>
       <section anchor="in-network-computing" title="In-Network Computing">
@@ -1151,7 +1155,6 @@
       &RFC6559;
       &RFC7094;
       &RFC7413;
-      &RFC7629;
       &RFC8938;
       &RFC9065;
       &I-D.irtf-coinrg-use-cases;
