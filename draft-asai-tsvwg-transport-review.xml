@@ -1,60 +1,22 @@
-<?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY RFC0768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml">
-<!ENTITY RFC0793 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0793.xml">
-<!ENTITY RFC0919 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.0919.xml">
-<!ENTITY RFC1112 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1112.xml">
-<!ENTITY RFC1122 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1122.xml">
-<!ENTITY RFC1123 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1123.xml">
-<!ENTITY RFC1301 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1301.xml">
-<!ENTITY RFC1458 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.1458.xml">
-<!ENTITY RFC2119 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY RFC2474 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml">
-<!ENTITY RFC2768 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2768.xml">
-<!ENTITY RFC3022 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3022.xml">
-<!ENTITY RFC3048 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3048.xml">
-<!ENTITY RFC3168 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml">
-<!ENTITY RFC3208 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3208.xml">
-<!ENTITY RFC3973 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3973.xml">
-<!ENTITY RFC4340 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4340.xml">
-<!ENTITY RFC4654 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4654.xml">
-<!ENTITY RFC4786 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4786.xml">
-<!ENTITY RFC4960 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml">
-<!ENTITY RFC5216 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5216.xml">
-<!ENTITY RFC5944 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5944.xml">
-<!ENTITY RFC6071 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml">
-<!ENTITY RFC6275 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6275.xml">
-<!ENTITY RFC6347 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6347.xml">
-<!ENTITY RFC6559 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6559.xml">
-<!ENTITY RFC7094 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7094.xml">
-<!ENTITY RFC7413 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7413.xml">
-<!ENTITY RFC7761 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.7761.xml">
-<!ENTITY RFC8402 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8402.xml">
-<!ENTITY RFC8446 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml">
-<!ENTITY RFC8655 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8655.xml">
-<!ENTITY RFC8684 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8684.xml">
-<!ENTITY RFC8831 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8831.xml">
-<!ENTITY RFC8899 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8899.xml">
-<!ENTITY RFC8938 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.8938.xml">
-<!ENTITY RFC9000 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml">
-<!ENTITY RFC9065 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9065.xml">
-<!ENTITY RFC9197 SYSTEM "http://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.9197.xml">
-<!ENTITY I-D.irtf-coinrg-use-cases SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml-ids/reference.I-D.draft-irtf-coinrg-use-cases.xml">
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="rfc7991bis.rnc"?>
+
+<!DOCTYPE rfc [
+  <!ENTITY nbsp    "&#160;">
+  <!ENTITY zwsp   "&#8203;">
+  <!ENTITY nbhy   "&#8209;">
+  <!ENTITY wj     "&#8288;">
+  <!ENTITY oacute "&#243;">
 ]>
 
-<?rfc strict="no" ?>
-<!-- give errors regarding ID-nits and DTD validation -->
-<!-- control the table of contents (ToC) -->
-<?rfc toc="yes"?>
-<!-- generate a ToC -->
-<?rfc tocdepth="4"?>
-<!-- the number of levels of subsections in ToC. default: 3 -->
-<!-- control references -->
-<?rfc symrefs="yes"?>
-
-<!--ipr="noDerivativeWorks2026", full2026, trust200902-->
-<!-- trust200902, noDerivativeWorks2026 -->
-<rfc docName="draft-asai-tsvwg-transport-review-04" ipr="trust200902" category="info" consensus="yes">
+<rfc
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  docName="draft-asai-tsvwg-transport-review-04" ipr="trust200902" category="info" consensus="yes"
+  obsoletes=""
+  updates=""
+  submissionType="IETF"
+  xml:lang="en"
+  version="3">
 
   <front>
     <title abbrev="Data Path and Data Flow Layers">
@@ -74,7 +36,7 @@
       </address>
     </author>
 
-    <date month="July" day="5" year="2023" />
+    <date month="July" day="10" year="2023" />
 
     <!-- Meta-data Declarations -->
     <area>Transport</area>
@@ -330,7 +292,7 @@
           an individual flow independently performs congestion control even if
           the same data path multiplexes multiple flows.
           Therefore, multiple flows cannot collectively perform congestion
-          control for the data path.
+          control for a data path.
           For example, when a data path multiplexes a TCP and a UDP flows, the
           TCP flow's congestion control may affect the other UDP flow's quality.
           Moreover, transport layer protocols utilize network resources on a
@@ -339,6 +301,7 @@
           layer, although a QoS technology such as DiffServ may be leveraged.
         </t>
         <t>In summary, congestion control should be performed on a data path
+          instead of data flows
           as it controls network resources, while flow control should be
           performed per flow as it is associated with the resources of
           end-hosts, from the viewpoint of resource management in the transport
@@ -522,26 +485,25 @@
       <section anchor="data-path-flow-summary" title="Summary">
         <t>As described above, the transport layer functionality is summarized
         by distinguishing data paths and data flows as follows:</t>
-        <t>The following functionality is categorized as data path functions.
-        <list style="symbols">
-          <t>In-band trajectory monitoring</t>
-          <t>Waypoint management</t>
-          <t>Bidirectional connection establishment</t>
-          <t>Data path quality (congestion) monitoring and congestion control</t>
-          <t>Data flow multiplexing</t>
-          <t>Packet duplication</t>
-          <t>Data path security</t>
-        </list>
-        </t>
-        <t>The following functionality is categorized as data flow functions.
-        <list style="symbols">
-          <t>Retransmission for reliable data communication</t>
-          <t>Flow control for receive-buffer management</t>
-          <t>Flow prioritization</t>
-          <t>Data flow and end-to-end security</t>
-          <t>Inverse multiplexing for multipath protocols</t>
-        </list>
-        </t>
+        <t>The following functionality is categorized as data path functions.</t>
+        <ul>
+          <li>In-band trajectory monitoring</li>
+          <li>Waypoint management</li>
+          <li>Bidirectional connection establishment</li>
+          <li>One-to-many connection for multicast</li>
+          <li>Data path quality (congestion) monitoring and congestion control</li>
+          <li>Data flow multiplexing</li>
+          <li>Packet duplication</li>
+          <li>Data path security</li>
+        </ul>
+        <t>The following functionality is categorized as data flow functions.</t>
+        <ul>
+          <li>Retransmission for reliable data communication</li>
+          <li>Flow control for receive-buffer management</li>
+          <li>Flow prioritization</li>
+          <li>Data flow and end-to-end security</li>
+          <li>Inverse multiplexing for multipath protocols</li>
+        </ul>
       </section>
 
     </section>
@@ -563,8 +525,9 @@
           flow layer provide these functions.
         </t>
         <t>The data path layer MAY implement in-band trajectory monitoring,
-          bidirectional connection establishment, data
-          path quality monitoring and congestion control,
+          bidirectional connection establishment,
+          one-to-many connection for multicast,
+          data path quality monitoring and congestion control,
           data flow multiplexing, and packet duplication.
           A data path layer protocol MAY implement other functions related to
           data paths.
@@ -578,8 +541,9 @@
           </t>
           <figure align="center" anchor="appending"
               title="Appending data path router identifiers to distinguish the data path">
-            <preamble>DPH: Data path layer protocol header</preamble>
             <artwork align="left"><![CDATA[
+DPH: Data path layer protocol header
+
 +--------+     *--------------*     *--------------*     +--------+
 | Host A |-----| DPR1 (ID: 3) |-----| DPR2 (ID: 4) |-----| Host B |
 +--------+     *--------------*     *--------------*     +--------+
@@ -648,7 +612,8 @@
         </section>
         <section title="Bidirectional connection establishment">
           <t>The data path layer SHOULD support both unidirectional and
-            bidirectional paths.
+            bidirectional paths as unicast is the most fundamental
+            communication model.
             A bidirectional path MAY be symmetric or asymmetric.
             As the characteristics of unidirectional and bidirectional paths are
             different, some data path layer protocols MAY only support either
@@ -661,6 +626,15 @@
             It MAY provide a 0-RTT connection establishment feature such as
             <xref target="RFC8446">TLS 1.3</xref>
             and <xref target="RFC7413">TCP Fast Open</xref>.
+          </t>
+        </section>
+        <section title="One-to-many connection">
+          <t>The data path layer MAY support one-to-many connection for multicast.
+          In addition to the one-to-many connection, it MAY support
+          many-to-one (reverse) connection.
+          These types of connections are beneficial to use cases such as
+          multi-access edge computing (<xref target="mec" />)
+          and in-network computing (<xref target="in-network-computing" />).
           </t>
         </section>
         <section title="Data path quality (congestion) monitoring and congestion control">
@@ -798,12 +772,6 @@
       <section title="Multipath Transport Layer Protocols">
         <figure align="center" anchor="example-multipath"
             title="An example of multipath data communication">
-          <preamble>Hosts A and B communicate with each other
-            over multiple data paths; Path R1-DPR3-DPR2 and Path DPR4-DPR2.
-            R1 is an IP router.
-            DPR2, DPR3, and DPR4 are data path routers that treat data path
-            layer protocols.</preamble>
-
           <artwork align="center"><![CDATA[
                *----*     *------*
             +--| R1 |-----| DPR3 |--+
@@ -814,6 +782,11 @@
                           *------*
             ]]></artwork>
         </figure>
+        <!--Hosts A and B communicate with each other
+            over multiple data paths; Path R1-DPR3-DPR2 and Path DPR4-DPR2.
+            R1 is an IP router.
+            DPR2, DPR3, and DPR4 are data path routers that treat data path
+            layer protocols.-->
         <t><xref target="example-multipath" /> shows an example of multipath
           data communication over two data paths.
           The end-hosts A and B establish two bidirectional data paths;
@@ -888,7 +861,7 @@
         </t>
 
       </section>
-      <section title="Multi-access Edge Computing">
+      <section anchor="mec" title="Multi-access Edge Computing">
         <t>Multi-access Edge Computing (MEC) enables application service
           providers to deploy computing resources into an access network
           edge, where is closer to end-hosts (subscribers, users or clients) than data
@@ -941,12 +914,13 @@
         </t>
         <figure align="center" anchor="layer-in-network-computing"
             title="An example of communication model of in-network computing">
-          <preamble>App., DF, DP, IP, and Link denote the application layer,
+          <!--
+          App., DF, DP, IP, and Link denote the application layer,
             the data flow layer, the data path layer, the IP, and the link
             layer, respectively. H1 and H2 are end-hosts, C1 and C2
             are in-network computing nodes, P1 is a data path router,
-            and R1 is an IP router.</preamble>
-
+            and R1 is an IP router.
+          -->
           <artwork align="left"><![CDATA[
 +------+                                               +------+
 | App. |<--------------------------------------------->| App. |
@@ -992,12 +966,11 @@
         </t>
       <figure align="center" anchor="fig-flow-arbitration"
             title="An example of flow arbitration over multiple data paths">
-          <preamble>H1, H2, H3, and H4 are end-hosts.
+          <!--H1, H2, H3, and H4 are end-hosts.
             R1, R2, and R3 are IP routers.
             P1 is a data path router that support the data path quality
             monitoring function.
-          </preamble>
-
+          -->
           <artwork align="left"><![CDATA[
 +----+                           *----*     +----+
 | H1 |--+                     +--| R2 |-----| H3 |
@@ -1033,41 +1006,63 @@
 
     <section title="Implementation Considerations">
       <t>Although this document does not specify the data path layer and the
-        data flow layer protocols, it discusses the implementation of these
-        protocols' specifications. 
-        The data path layer MAY be implemented over UDP for interoperability
-        with the current Internet operations
-        because other protocols than ICMP, TCP, and UDP MAY be filtered on
-        the Internet.
-        Data path layer protocols MUST implement the
+        data flow layer protocols, this section discusses the implementation of
+        these protocols' specifications.
+        This document presents the following three implementation models for
+        data path layer protocols.
+        <!--Data path layer protocols MUST implement the
         <xref target="RFC8899">maximum transmission unit (MTU) discovery</xref>.
+        -->
       </t>
-     <figure align="center" anchor="implementation"
-        title="An implementation of data path layer and data flow layer protocols over UDP">
-      <preamble>LH: Link-layer protocol header, IPH: IP header,
-        UDPH: UDP header, DPH: Data path layer protocol header,
-        DFH: Data flow layer protocol header</preamble>
-      <artwork align="left"><![CDATA[
+      <section anchor="dpp-over-ip" title="Data Path Layer Protocol over IP">
+        <t>The most straightforward way to implement a data path layer protocol
+        is over the Internet Protocol (IP) by using the Protocol
+        field specified in <xref target="RFC0791">RFC 791</xref>
+        in IP version 4 (IPv4) or the Next Header field specified
+        in <xref target="RFC8200">RFC 8200</xref> in IP version 6 (IPv6).</t>
+        <t>This model, however, has an issue that routers and
+        middleboxes may drop the data path layer protocol packets
+        as other protocols than ICMP, TCP, and UDP may be filtered on
+        the Internet.
+        </t>
+      </section>
+      <section anchor="dpp-over-udp-port" title="Data Path Layer Protocol over UDP with Port Number">
+        <t>An alternative model to implement a data path layer protocol is to
+        use UDP to encapsulate the data path layer protocol packets in UDP.
+        To identify a data path layer protocol packet in UDP, a specific port
+        number can be used.
+        However, this model adds semantics to a port number interpretation
+        as a specific data path layer protocol is intended to be processed
+        by some middleboxes between the end-hosts.</t>
+        <figure align="center" anchor="implementation"
+          title="An implementation of data path layer and data flow layer protocols over UDP">
+        <artwork align="left"><![CDATA[
 +----+-----+------+-----+-----+------------------+-----------+
 | LH | IPH | UDPH | DPH | DFH | Payload          | (Trailer) |
 +----+-----+------+-----+-----+------------------+-----------+
-            ]]></artwork>
-      </figure>
-      <t><xref target="implementation" /> illustrates an example packet format
-        of data path layer and data flow layer protocols over UDP.
-        <!--The current transport layer protocol integrates a data path protocol
-        and a data flow protocol headers.-->
-        In this figure, the UDP header is not intended to provide
-        the transport layer's functionality
-        but is introduced for interoperability with existing middleboxes
-        on the Internet.
-      </t>
-      <t>A data path layer protocol MAY use hop-by-hop UDP connections to
-        designate waypoints like an overlay network.
-        Otherwise, data path routers require to leverage routing technologies
-        such as Segment Routing and policy-based routing to support waypoint
-        management.
-      </t>
+
+* LH: Link-layer protocol header
+* IPH: IP header
+* UDPH: UDP header
+* DPH: Data path layer protocol header
+* DFH: Data flow layer protocol header
+              ]]></artwork>
+        </figure>
+        <t><xref target="implementation" /> illustrates an example packet format
+          of data path layer and data flow layer protocols over UDP.
+          In this figure, the UDP header is not intended to provide
+          the transport layer's functionality
+          but is introduced for interoperability with existing middleboxes
+          on the Internet.
+        </t>
+        <t>A data path layer protocol MAY use hop-by-hop UDP connections to
+          designate waypoints like an overlay network.
+          Otherwise, data path routers require to leverage routing technologies
+          such as Segment Routing and policy-based routing to support waypoint
+          management.
+        </t>
+
+      </section>
     </section>
 
     <!--
@@ -1116,48 +1111,50 @@
     <!-- References split into informative and normative -->
 
     <references title="Normative References">
-      &RFC0768;
-      &RFC0793;
-      &RFC0919;
-      &RFC1112;
-      &RFC1122;
-      &RFC1123;
-      &RFC2119;
-      &RFC2474;
-      &RFC3168;
-      &RFC4340;
-      &RFC4786;
-      &RFC4960;
-      &RFC5216;
-      &RFC5944;
-      &RFC6275;
-      &RFC6347;
-      &RFC7761;
-      &RFC8402;
-      &RFC8446;
-      &RFC8655;
-      &RFC8684;
-      &RFC8831;
-      &RFC8899;
-      &RFC9000;
-      &RFC9197;
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.0768.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.0791.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.0793.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.0919.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1112.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1122.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1123.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2474.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3168.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4340.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4786.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4960.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5216.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5944.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6275.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6347.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7761.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8200.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8402.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8655.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8684.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8831.xml"/>
+      <!--<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8899.xml"/>-->
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9000.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9197.xml"/>
     </references>
     <references title="Informative References">
-      &RFC1301;
-      &RFC1458;
-      &RFC2768;
-      &RFC3022;
-      &RFC3048;
-      &RFC3208;
-      &RFC3973;
-      &RFC4654;
-      &RFC6071;
-      &RFC6559;
-      &RFC7094;
-      &RFC7413;
-      &RFC8938;
-      &RFC9065;
-      &I-D.irtf-coinrg-use-cases;
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1301.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1458.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2768.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3022.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3048.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3208.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.3973.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.4654.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6071.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6559.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7094.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7413.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8938.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.9065.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml-ids/reference.I-D.irtf-coinrg-use-cases.xml"/>
 
       <reference anchor="mcTLS">
         <front>
